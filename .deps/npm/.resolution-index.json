@@ -1,0 +1,18 @@
+{
+  "lession1.1/Helloword.sol": {
+    "__sources__": {
+      "lession1.1/Helloword.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.13;\n\ncontract Helloworld {\n    string public message;\n    address public owner;\n\n    constructor() {\n        message = \"Hello,Solidity!\";\n        owner = msg.sender;\n    }\n\n    function updateMessage(string memory newMessage) public {\n        message = newMessage;\n    }\n\n    function getMessage() public view returns (string memory) {\n        return message;\n    }\n\n    function getOwner() public view returns (address) {\n        return owner;\n    }\n}",
+        "file": "lession1.1/Helloword.sol"
+      }
+    }
+  },
+  "lession1.2/OptimizeContract.sol": {
+    "__sources__": {
+      "lession1.2/OptimizeContract.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ncontract OptimizeContract {\r\n    uint256[] public numbers;\r\n    address public immutable ADMIN;\r\n    uint256 public constant MULTIPLIER = 2;\r\n\r\n    constructor() {\r\n        ADMIN = msg.sender;\r\n    }\r\n\r\n    function batchProcess(uint256[] calldata inputs) external {\r\n        require(msg.sender == ADMIN);\r\n        uint256 length = inputs.length;\r\n        // 先计算不写入，storage存储比memory消耗大\r\n        for (uint i = 0; i < length; i ++) {\r\n            uint256 result = inputs[i] * MULTIPLIER;\r\n            numbers[i] = result;\r\n        }\r\n    }\r\n\r\n    function getSum() external view returns (uint256) {\r\n        require(msg.sender == ADMIN);\r\n        uint256 sum = 0;\r\n        uint256 len = numbers.length;\r\n        for (uint i = 0; i < len; i++) {\r\n            sum += numbers[i];\r\n        }\r\n        return sum;\r\n    }\r\n}",
+        "file": "lession1.2/OptimizeContract.sol"
+      }
+    }
+  }
+}
