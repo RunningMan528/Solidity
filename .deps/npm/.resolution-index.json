@@ -14,5 +14,29 @@
         "file": "lession1.2/OptimizeContract.sol"
       }
     }
+  },
+  "lession2.1/TypeConvert.sol": {
+    "__sources__": {
+      "lession2.1/TypeConvert.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ncontract TypeConvert {\r\n\r\n    // 任务一：安全的uint256转uint8\r\n    function safeConvertToUint8(uint256 value) public pure returns (uint8) {\r\n        require(value <= type(uint8).max, \"value too large for uint8\");\r\n        return uint8(value);\r\n    }\r\n\r\n    // 任务二：字符串比较\r\n    function compareStrings(string memory str1,string memory str2) public pure returns (bool) {\r\n        return keccak256(bytes(str1)) == keccak256(bytes(str2));\r\n    }\r\n\r\n    // 任务三：零地址检查\r\n    function isZeroAddress(address addr) public pure returns (bool) {\r\n        return addr == address(0);\r\n    }\r\n\r\n    // 测试函数\r\n    function testConversion() public pure returns (uint8,uint8) {\r\n        return (\r\n            safeConvertToUint8(255),\r\n            safeConvertToUint8(100)\r\n            //safeConvertToUint8(256) // 溢出被截断\r\n            );\r\n    }\r\n\r\n    function testStringComparison() public pure returns (bool,bool) {\r\n        return (\r\n            compareStrings(\"Totoro\", \"Uotoro\"),\r\n            compareStrings(\"Totoro\", \"Totoro\")\r\n        );\r\n    }\r\n\r\n    function testZeroAddress() public pure returns (bool,bool) {\r\n        return (\r\n            isZeroAddress(address(0)),\r\n            isZeroAddress(0x0000000000000000000000000000000000001234)\r\n        );\r\n    }\r\n}",
+        "file": "lession2.1/TypeConvert.sol"
+      }
+    }
+  },
+  "lession2.1/SimpleToken.sol": {
+    "__sources__": {
+      "lession2.1/SimpleToken.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\n/**\r\n创建⼀个简单的代币合约，综合运⽤所学的数据类型。\r\n*/\r\ncontract SimpleToken {\r\n    // 状态变量\r\n    string public name = \"My Token\";\r\n    string public symbol = \"MTK\";\r\n    uint8 public decimals = 18;\r\n    uint256 public totalSupply;\r\n\r\n    address public owner;\r\n\r\n    mapping (address => uint256) public balanceOf;\r\n\r\n    // 事件\r\n    event Transfer(address indexed from,address indexed to,uint256 value);\r\n\r\n    // 构造函数\r\n    constructor(uint256 _initialSupply) {\r\n        owner = msg.sender;\r\n        totalSupply = _initialSupply * 10 ** uint256(decimals);\r\n        balanceOf[msg.sender] = totalSupply;\r\n    }\r\n\r\n    // 转账函数\r\n    function transfer(address _to,uint256 _value) public returns (bool) {\r\n        require(_to != address(0), \"Cannot transfer to zero address\");\r\n        require(balanceOf[msg.sender] >= _value, \"Insufficient balance\");\r\n        \r\n        balanceOf[msg.sender] -= _value;\r\n        balanceOf[_to] += _value;\r\n\r\n        emit Transfer(msg.sender,_to, _value);\r\n        return true;\r\n    }\r\n\r\n    // 查询余额\r\n    function getBalance(address _owner) public view returns (uint256) {\r\n        return balanceOf[_owner];\r\n    }\r\n\r\n    // 铸造代币\r\n    function mint(address _to, uint256 _amount) public {\r\n        require(msg.sender == owner, \"Only owner can mint\");\r\n        require(_to != address(0), \"Cannot mint to zero address\");\r\n\r\n        totalSupply += _amount;\r\n        balanceOf[_to] = _amount;\r\n\r\n        emit Transfer(address(0), _to, _amount);\r\n    }\r\n}",
+        "file": "lession2.1/SimpleToken.sol"
+      }
+    }
+  },
+  "lession2.1/VotingSystem.sol": {
+    "__sources__": {
+      "lession2.1/VotingSystem.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\n/**\r\n创建⼀个简单的投票合约，使⽤枚举定义投票选项。\r\n任务要求：\r\n1. 使⽤enum定义投票选项：Yes, No, Abstain\r\n2. 使⽤mapping记录每个地址的投票\r\n3. 使⽤uint统计每个选项的票数\r\n4. 实现投票和查询功能\r\n*/\r\n\r\ncontract VotingSystem {\r\n    enum VoteOption {\r\n        YES,\r\n        NO,\r\n        Abstain\r\n    }\r\n\r\n    // 状态变量\r\n    mapping (address => VoteOption) public votes;\r\n    mapping (address => bool) public hasVoted;\r\n    uint public yesCount;\r\n    uint public noCount;\r\n    uint public abstainCount;\r\n\r\n    event Voted(address indexed ovter,VoteOption vote);\r\n\r\n    // 投票\r\n    function vote(VoteOption _vote) public  {\r\n        // 检查是否已投票\r\n        require(!hasVoted[msg.sender],\"You already voted!\");\r\n        // 记录投票\r\n        votes[msg.sender] = _vote;\r\n        hasVoted[msg.sender] = true;\r\n        // 更新计数\r\n        if (_vote == VoteOption.YES) {\r\n            yesCount++;\r\n        } else if (_vote == VoteOption.NO) {\r\n            noCount++;\r\n        } else {\r\n            abstainCount++;\r\n        }\r\n        emit Voted(msg.sender, _vote);\r\n    }\r\n\r\n    // 查询\r\n    function getResults() public view returns (uint,uint,uint) {\r\n        return (yesCount,noCount,abstainCount);\r\n    }\r\n\r\n    // 当前调用者的投票结果\r\n    function getMyVote() public view returns (VoteOption) {\r\n        require(hasVoted[msg.sender],\"You need vote first!\");\r\n        return votes[msg.sender];\r\n    }\r\n\r\n    // 总的投票数\r\n    function getTotalVotes() public view returns (uint) {\r\n        return yesCount + noCount + abstainCount;\r\n    }\r\n\r\n}",
+        "file": "lession2.1/VotingSystem.sol"
+      }
+    }
   }
 }
