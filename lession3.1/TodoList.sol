@@ -42,31 +42,90 @@ contract TodoList {
 
     // 标记为完成
     function completeTodo(uint index) public  {
-         
+        address user = msg.sender;
+        require(index < userTodos[user].length, "Index out of bounds!");
+        require(!userTodos[user][index].completed, "Already completed!");
+
+        userTodos[user][index].completed = true;
+        emit TodoCompleted(user, index); 
     }
 
     // 删除待办,快速删除不保序
     function deleteTodo(uint index) public  {
-        
+        address user = msg.sender;
+        uint len = userTodos[user].length;
+        require(index < len, "Index out of bounds!");
+
+        // 将该用户的代办列表最后一个元素赋值给index位置，并pop最后一个
+        if (index != len - 1) {
+            userTodos[user][index] = userTodos[user][len - 1];
+        }
+        userTodos[user].pop();
+
+        emit TodoDeleted(user, index);
     }
 
     // 获取所有待办
-    function getAllTodos() public {
-        
+    function getAllTodos() public view returns(Todo[] memory){
+        return userTodos[msg.sender];
     }
 
     // 获取待办数量
-    function getTodoCount() public {
-        
+    function getTodoCount() public view returns (uint) {
+        return userTodos[msg.sender].length;
     }
 
     // 获取未完成的待办
     function getPendingTodos() public view returns(Todo[] memory) {
+        // 获取以下变量，避免多次访问造成gas浪费
+        address user = msg.sender;
+        Todo[] memory allTodos = userTodos[user];
+        uint len = allTodos.length;
+
+        uint count = 0;
         
+        for (uint i = 0; i < len; i++) {
+            if (!allTodos[i].completed) {
+                count++;
+            }
+        }
+
+        Todo[] memory unCompleteds = new Todo[](count);
+        uint index = 0;
+        for (uint i = 0; i < len; i++) 
+        {
+            if (!allTodos[i].completed) {
+                unCompleteds[index] = allTodos[i];
+                index++;
+            }   
+        }
+        return unCompleteds;
     }
 
     // 获取已完成的待办
     function getCompletedTodos() public view returns (Todo[] memory) {
+        // 获取以下变量，避免多次访问造成gas浪费
+        address user = msg.sender;
+        Todo[] memory allTodos = userTodos[user];
+        uint len = allTodos.length;
+
+        uint count = 0;
         
+        for (uint i = 0; i < len; i++) {
+            if (allTodos[i].completed) {
+                count++;
+            }
+        }
+
+        Todo[] memory completeds = new Todo[](count);
+        uint index = 0;
+        for (uint i = 0; i < len; i++) 
+        {
+            if (allTodos[i].completed) {
+                completeds[index] = allTodos[i];
+                index++;
+            }   
+        }
+        return completeds;
     }
 }
