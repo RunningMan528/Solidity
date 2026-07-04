@@ -1,0 +1,131 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "owners",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "required",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "transactionCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "transactions",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes",
+						"name": "data",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bool",
+						"name": "executed",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "confirmations",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"notice": "需求： 创建⼀个简单的多签名钱包： 1. 需要多个签名者确认才能执⾏交易 2. 提交交易提案 3. 签名者确认提案 4. 达到阈值后执⾏ 提示： 使⽤struct存储提案 使⽤mapping记录确认 使⽤modifier检查权限",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession3.3-Function/MultiSignatureWallet.sol": "MultiSignatureWallet"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession3.3-Function/MultiSignatureWallet.sol": {
+			"keccak256": "0x136a9a67765233983fa4efc993d0013be7f5bb94ed01cc0c702a788a5e7b290a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://4453e3a1a7c9107ebbf563a0feb6841e87ab47d8ce62837e55386544d2e416d4",
+				"dweb:/ipfs/QmWg5P2toqnMsjZfRrH7HikNh87Cjvn86cWgW7YyyYBEeJ"
+			]
+		}
+	},
+	"version": 1
+}

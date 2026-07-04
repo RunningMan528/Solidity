@@ -78,5 +78,29 @@
         "file": "lession3.2-Mapping&Struct/VotingSystem.sol"
       }
     }
+  },
+  "lession3.3-Function/RoleManagement.sol": {
+    "__sources__": {
+      "lession3.3-Function/RoleManagement.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\n/**\n创建⼀个完整的权限管理系统：\n1. 定义三种⻆⾊：Owner、Admin、User\n2. 实现⻆⾊分配和检查\n3. 不同⻆⾊有不同权限\n4. Owner可以添加Admin\n5. Admin可以添加User\n6. 所有⼈可以查询⻆⾊\n\n考察modifier的使用\n*/\ncontract RoleManagement {\n    // 定义角色枚举\n    enum Role { None, User, Admin, Owner }\n\n    // 存储用户角色\n    mapping (address => Role) public roles;\n\n    address public owner;\n\n    event RoleAssigned(address indexed user,Role role);\n    event RoleRevoked(address indexed  user);\n\n    constructor() {\n        owner = msg.sender;\n        roles[owner] = Role.Owner;\n    }\n\n    // 定义modifier\n    // 检查是否是Owner\n    modifier onlyOwner() {\n        require(msg.sender == owner, \"Only Owner can call!\");\n        _;\n    }\n\n    // 检查是否是Admin\n    modifier onlyAdmin() {\n        require(roles[msg.sender] == Role.Admin || roles[msg.sender] == Role.Owner, \"Only Admin or Owner can call!\");\n        _;\n    }\n\n    // 用户地址是否正常\n    modifier isValidAddress() {\n        require(msg.sender != address(0), \"Invalid address!\");\n        _;\n    }\n\n    // 添加Admin\n    function addAdmin(address user) public onlyOwner isValidAddress {\n        roles[user] = Role.Admin;\n        emit RoleAssigned(user, Role.Admin);\n    }\n\n    // 添加User\n    function addUser(address user) public onlyAdmin isValidAddress {\n        roles[user] = Role.User;\n        emit RoleAssigned(user, Role.User);\n    }\n\n    // 查询角色\n    function getRole(address user) public view returns (Role) {\n        return roles[user];\n    }\n\n    // 撤销角色\n    function revokeRole(address user) public onlyOwner {\n        delete roles[user];\n        emit RoleRevoked(user);\n    }\n\n    // 查询是否是某个角色\n    function hasRole(address user,Role role) public view returns (bool) {\n        return roles[user] == role;\n    }\n\n}",
+        "file": "lession3.3-Function/RoleManagement.sol"
+      }
+    }
+  },
+  "lession3.3-Function/PaymentContract.sol": {
+    "__sources__": {
+      "lession3.3-Function/PaymentContract.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\n/**\n创建⼀个完整的⽀付合约：\n1. ⽀持存款（deposit）\n2. ⽀持提款（withdraw）\n3. ⽀持紧急停⽌（pause）\n4. Owner可以暂停/恢复合约\n5. 查询余额\n6. 限制最⼩存款⾦额\n*/\ncontract PaymentContract {\n\n    // 暂停/恢复\n    bool public paused = false;\n    // 最小存款金额\n    uint public constant MIN_DEPOSIT  = 0.01 ether;\n\n    // 存储存款数据\n    mapping (address => uint) public balances;\n\n    address public owner;\n\n    event UserDeposited(address indexed user,uint amount);\n    event UserWithdraw(address indexed user,uint amount);\n    event StateChanged(address by,bool paused);\n\n    constructor() {\n        owner = msg.sender;\n    }\n\n    \n    modifier onlyOwner() {\n        require(msg.sender == owner, \"Only owner can call!\");\n        _;\n    }\n\n    modifier whenNotPause() {\n        require(!paused, \"State is paused!\");\n        _;\n    }\n\n    modifier whenPaused() {\n        require(paused, \"State is not paused!\");\n        _;\n    }\n\n    modifier minAmount(uint minValue) {\n        require(msg.value >= minValue, \"Below the minimum amount!\");\n        _;\n    }\n\n    // 存款\n    function deposit() public payable  whenNotPause minAmount(MIN_DEPOSIT) {\n        balances[msg.sender] += msg.value;\n        emit UserDeposited(msg.sender, msg.value);\n    }\n\n    // 提款\n    function withdraw(uint amount) public whenNotPause {\n        require(balances[msg.sender] > amount, \"Insufficient Balance\");\n        balances[msg.sender] -= amount;\n        payable(msg.sender).transfer(amount);\n        emit UserWithdraw(msg.sender, amount);\n    }\n\n    // 紧急停止\n    function emergencyStop() public onlyOwner whenNotPause{\n        paused = true;\n        emit StateChanged(owner,paused);\n    }\n\n    // 恢复\n    function rsume() public onlyOwner whenPaused {\n        paused = false;\n         emit StateChanged(owner,paused);\n    }\n\n    // 查询余额\n    function getBalance(address user) public view returns (uint) {\n        return balances[user];\n    }\n\n    // 当前合约的余额\n    function getContractBalance() public view returns (uint) {\n        return address(this).balance;\n    }\n\n    // 发送ETH到合约,合约收到ETH时调用\n    receive() external payable { \n        deposit();\n    }\n\n    /**\n    问题总结:\n    modifier中不应该直接访问状态变量,应该通过参数的形式传递\n    常量定义命名规范,应该全部是大写\n    没有使用payable,来接受ETH\n    合约状态变化,执行变化的操作者也应该作为参数返回\n    */\n}",
+        "file": "lession3.3-Function/PaymentContract.sol"
+      }
+    }
+  },
+  "lession3.3-Function/MultiSignatureWallet.sol": {
+    "__sources__": {
+      "lession3.3-Function/MultiSignatureWallet.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\n/**\n需求：\n创建⼀个简单的多签名钱包：\n1. 需要多个签名者确认才能执⾏交易\n2. 提交交易提案\n3. 签名者确认提案\n4. 达到阈值后执⾏\n提示：\n使⽤struct存储提案\n使⽤mapping记录确认\n使⽤modifier检查权限\n*/\ncontract MultiSignatureWallet {\n\n    // 提案结构体\n    struct Transaction {\n        // 向谁转账\n        address to;\n        // 转账金额\n        uint value;\n        // 调用数据\n        bytes data;\n        // 是否已经执行\n        bool executed;\n\n        //确认数量\n        uint confirmations;\n    }\n\n    // 签名者列表,合约部署时指定\n    address[] public owners;\n    // 指定阈值\n    uint public required;\n\n    // 为了快速判断是否是签名者\n    mapping (address => bool) isOwner;\n\n    // 提案ID自增\n    uint public transactionCount = 0;\n\n    // 提案列表\n    Transaction[] public transactions;\n\n}",
+        "file": "lession3.3-Function/MultiSignatureWallet.sol"
+      }
+    }
   }
 }
