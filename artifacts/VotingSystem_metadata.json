@@ -6,23 +6,9 @@
 	"output": {
 		"abi": [
 			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"internalType": "uint256",
-						"name": "proposalId",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "description",
-						"type": "string"
-					}
-				],
-				"name": "ProposalCreated",
-				"type": "event"
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
 			},
 			{
 				"anonymous": false,
@@ -30,33 +16,35 @@
 					{
 						"indexed": true,
 						"internalType": "uint256",
-						"name": "proposalId",
+						"name": "pId",
 						"type": "uint256"
-					},
+					}
+				],
+				"name": "CreateProposal",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
 					{
 						"indexed": true,
 						"internalType": "address",
-						"name": "voter",
+						"name": "user",
 						"type": "address"
-					}
-				],
-				"name": "Voted",
-				"type": "event"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "string",
-						"name": "description",
-						"type": "string"
 					},
 					{
+						"indexed": false,
 						"internalType": "uint256",
-						"name": "duration",
+						"name": "pId",
 						"type": "uint256"
 					}
 				],
-				"name": "createProposal",
+				"name": "UserVoted",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "MAX_COUNT",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -64,23 +52,54 @@
 						"type": "uint256"
 					}
 				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string[]",
+						"name": "descriptions",
+						"type": "string[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "deadlines",
+						"type": "uint256[]"
+					}
+				],
+				"name": "createProposals",
+				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAll",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
 				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "proposalId",
+						"name": "pId",
 						"type": "uint256"
 					}
 				],
-				"name": "getProposalInfo",
+				"name": "getVoteInformation",
 				"outputs": [
 					{
-						"internalType": "string",
+						"internalType": "uint256",
 						"name": "",
-						"type": "string"
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -88,7 +107,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "getWinProposal",
+				"name": "getWin",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -96,9 +115,22 @@
 						"type": "uint256"
 					},
 					{
-						"internalType": "string",
+						"internalType": "uint256",
 						"name": "",
-						"type": "string"
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
 					}
 				],
 				"stateMutability": "view",
@@ -108,21 +140,16 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "proposalId",
+						"name": "",
 						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "voter",
-						"type": "address"
 					}
 				],
-				"name": "hasVoted",
+				"name": "pIds",
 				"outputs": [
 					{
-						"internalType": "bool",
+						"internalType": "uint256",
 						"name": "",
-						"type": "bool"
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -158,18 +185,18 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "voteCount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
 						"name": "deadline",
 						"type": "uint256"
 					},
 					{
 						"internalType": "bool",
-						"name": "executed",
+						"name": "exisit",
 						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "voteCount",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -179,7 +206,7 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "proposalId",
+						"name": "pId",
 						"type": "uint256"
 					}
 				],
@@ -197,13 +224,13 @@
 		"userdoc": {
 			"kind": "user",
 			"methods": {},
-			"notice": "创建⼀个提案投票系统： 1. 定义Proposal结构体（包含voters的mapping） 2. ⽀持创建提案 3. ⽀持投票（每⼈只能投⼀次） 4. 查询提案信息 5. 获取获胜提案 主要考察： ID自增系统使用 结构体包含mapping,不能在memory或calldata,只能用storage",
+			"notice": "需求： 创建⼀个完整的投票系统： 1. ⽀持创建多个提案 2. 每个提案有截⽌时间 3. 只有owner可以创建提案 4. 每个地址只能投⼀次票 5. 可以查询投票结果 6. 可以获取获胜提案",
 			"version": 1
 		}
 	},
 	"settings": {
 		"compilationTarget": {
-			"lession3.2-Mapping&Struct/VotingSystem.sol": "VotingSystem"
+			"lession4.1-Control/VotingSystem.sol": "VotingSystem"
 		},
 		"evmVersion": "osaka",
 		"libraries": {},
@@ -217,12 +244,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"lession3.2-Mapping&Struct/VotingSystem.sol": {
-			"keccak256": "0x5fac4c5c3fce5f2c9f12a943f6b64bfda745dce4ddbc148d4cf287a11ed40e36",
+		"lession4.1-Control/VotingSystem.sol": {
+			"keccak256": "0x007e4379b4e6022ae7620ac1978a174b85d96838045acc8b57c99e2eb0c6b7b4",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c24c325b903e4a56ceea9bd9f6737de9ad2a913769d24efe0919f4f6b6bbc2b0",
-				"dweb:/ipfs/QmVCcGbmiG3nsUTyopt1mphoex1SFmSiC1129kNFheDn6J"
+				"bzz-raw://9db7e31f380214cc85abaaa95434f086b113184365f3c46b0c0c399fb88a99ef",
+				"dweb:/ipfs/Qmccr8LB59QwyPw3t7cjJQ8tyPVEhYK5cM6KaeKA7W4JvW"
 			]
 		}
 	},

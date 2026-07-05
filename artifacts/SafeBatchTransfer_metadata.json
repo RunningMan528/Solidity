@@ -1,0 +1,46 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"notice": "需求： 实现⼀个安全的批量转账功能： 1. 验证数组⻓度⼀致 2. 限制批量⼤⼩ 3. 预先检查总⾦额 4. 验证所有地址 5. 保证原⼦性",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession4.1-Control/SafeBatchTransfer.sol": "SafeBatchTransfer"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession4.1-Control/SafeBatchTransfer.sol": {
+			"keccak256": "0xfa3a1693bd8e575a709cd738487f02b9b571e8b0467b8581bbe2d22db89f1cfc",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://9331dd29307e952e6dbd72468c33b58c7ec78c2ccdb91f8c8a7f8ab1c5ef3398",
+				"dweb:/ipfs/QmeHCgn3mWbazuq4KeEGcuMTmFqD4WMwfrACbyFWaovRR9"
+			]
+		}
+	},
+	"version": 1
+}
