@@ -35,6 +35,9 @@ contract AdvancedCrowdFunding {
     // 贡献者地址列表  contributors
     address[] contributors;
 
+    // ReentrancyGuard
+    bool private locked = false;
+
     // 事件
     // 状态改变 StateChanged (旧状态/新状态/时间戳)
     event StateChanged(State oldState,State newState,uint timestamp);
@@ -57,6 +60,13 @@ contract AdvancedCrowdFunding {
     modifier inState(State expected) {
         require(currentState == expected, "Invalid State!");
         _;
+    }
+
+    modifier noReentrant() {
+        require(!locked, "Reentrant call");
+        locked = true;
+        _;
+        locked = false;
     }
 
     // 构造函数 参数需要众筹数量,过期时间 days
@@ -107,7 +117,7 @@ contract AdvancedCrowdFunding {
     }
 
     // 创建者提取资金 withDrawFunds
-    function withDrawFunds() public onlyCreator inState(State.Successful){
+    function withDrawFunds() public onlyCreator inState(State.Successful) noReentrant{
         uint balance = address(this).balance;
         require(balance > 0,"No balance to withdraw!");
 

@@ -322,11 +322,11 @@
 	},
 	"sources": {
 		"lession4.2-Specialtype&Globalvariable/AdvanceCrowdFunding.sol": {
-			"keccak256": "0x4e1e9dcfbf05be773ac86a07579861e043ab15e261eef9e93688b2d0b640aaee",
+			"keccak256": "0x4ad0364bfe56052e3abc10945eca9763ce6986184acc5c3f7c9773f2650eee89",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://00d003554a76eb4b4fef9b9394a58928afb489348c2244c39a5b973c2f1098d7",
-				"dweb:/ipfs/QmRgXsWQST9PERjow4ZoKWmkHXLch1LE21bSvbwhBxsVUb"
+				"bzz-raw://0f8a1ff405c938bace72692d89a0dd5d1901a82cd16a399b5b43b2713f6ad3ca",
+				"dweb:/ipfs/QmTWzF6a44f632s8NLvLdH3G65VMgoeaX9E7zdWhzk53sE"
 			]
 		}
 	},
