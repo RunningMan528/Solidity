@@ -7,7 +7,7 @@ contract OpenzepplinDemo {
 
     using Strings for uint256;
     using Address for address;
-    using Strings for  string;
+    using Strings for string;
 
     // 使用Strings库
     function numberToString(uint256 num) public pure returns (string memory) {
