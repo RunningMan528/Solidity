@@ -1,0 +1,92 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "decrement",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "increment",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession6.2-Library/Counter.sol": "Counter"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession6.2-Library/AdvancedMath.sol": {
+			"keccak256": "0x6f83e009ed11da08b7472764ccdc6047e1159b0b0a23282e7ddd0c9a189fcffc",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0308b2ea826dfa74ab015a89a1102858639e26ba988b0f1da30249c62c8ea597",
+				"dweb:/ipfs/QmTzjFwMdLQsE7XViQoob1rdoACR126TpScNbCP6ogzkPL"
+			]
+		},
+		"lession6.2-Library/Counter.sol": {
+			"keccak256": "0x31ef68f4212a30084dcb0b7b1079ee2b1d35fcd7c06e17af31e5ec6b19bbad84",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://003c82f700ea35de083bf61505e4243388157be14fb1a4f087ecf6f7149c5380",
+				"dweb:/ipfs/Qmbrkj8d328guacprA3noLeaqejptd33dnrisvkfqSDHZY"
+			]
+		}
+	},
+	"version": 1
+}

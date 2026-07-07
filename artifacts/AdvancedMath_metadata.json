@@ -1,0 +1,46 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"notice": "1. 实现平⽅根函数（使⽤Newton-Raphson⽅法） 2. 实现最⼤公约数（GCD） 3. 实现幂运算 4. 所有函数都是pure函数",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession6.2-Library/AdvancedMath.sol": "AdvancedMath"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession6.2-Library/AdvancedMath.sol": {
+			"keccak256": "0x6f83e009ed11da08b7472764ccdc6047e1159b0b0a23282e7ddd0c9a189fcffc",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0308b2ea826dfa74ab015a89a1102858639e26ba988b0f1da30249c62c8ea597",
+				"dweb:/ipfs/QmTzjFwMdLQsE7XViQoob1rdoACR126TpScNbCP6ogzkPL"
+			]
+		}
+	},
+	"version": 1
+}

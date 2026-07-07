@@ -1,0 +1,97 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"notice": "创建⼀个模块化的权限管理系统： 1. Ownable合约：单⼀所有者管理 2. Pausable合约：暂停功能 3. MyContract：组合两个功能",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession6.1-Inheritance/AuthorityManagement.sol": "Ownable"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession6.1-Inheritance/AuthorityManagement.sol": {
+			"keccak256": "0xdcd83afe445741eb96626f92981956b91f93c1f85aabf62a555462354d04c8cd",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://2df1005891dbd17c4aa33881021c75025972a651ae0a41726e1368d8c3e8449e",
+				"dweb:/ipfs/Qmbdszj998dyawxXqV3vnvg6jsj1QZWobGiNBdMeiRbgus"
+			]
+		}
+	},
+	"version": 1
+}

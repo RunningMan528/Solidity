@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession6.1-Inheritance/AuthorityManagement.sol": "Ownerable"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession6.1-Inheritance/AuthorityManagement.sol": {
+			"keccak256": "0x073c57d95fc294830e5d6b0525b8587d834f78fe830923ffd7d825a63410eeeb",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5b084d92e0b9cc875f406e62a2f4a1f6b2e349bba112485c31adde5a86784190",
+				"dweb:/ipfs/QmcQRzzTLP7uGffMyymRpKUM5AtKC8tgHXqBNwcDAM1jC9"
+			]
+		}
+	},
+	"version": 1
+}

@@ -1,0 +1,46 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"notice": "使用OpenZepplin标准库实现如下功能: 1. 使⽤EnumerableSet数据结构 2. 实现添加、移除、检查功能 3. ⽀持遍历所有地址",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession6.2-Library/WhiteList.sol": "WhiteList"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession6.2-Library/WhiteList.sol": {
+			"keccak256": "0xeacade0fcb6af2b55638f6ff79187ddb7a53e546964d79f4579e0b52fb883e7e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c080df1ddbac33bd739f7066655c44e37ad9bd77a51b66dcce3dce01affdd843",
+				"dweb:/ipfs/QmPn7nFT8uKN9v5JFrufLXLQxnp68tiBKm43bMC1bvwK1N"
+			]
+		}
+	},
+	"version": 1
+}

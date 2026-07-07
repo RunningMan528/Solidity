@@ -1,0 +1,99 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "eat",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "makeSound",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "sleep",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "species",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"notice": "1. 创建Animal抽象合约，定义makeSound抽象函数 2. 创建Dog和Cat⼦合约实现makeSound 3. 添加共同的eat函数",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession6.1-Inheritance/AbtractContract.sol": "Animal"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession6.1-Inheritance/AbtractContract.sol": {
+			"keccak256": "0xab6431479bdf4b7f2e6f126cebf1615deb878320aa33156b363a799a01f59c38",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://93a066a75c34e676f83b94fea07d4035889591a0438f64627fbaf7c24ff30ac4",
+				"dweb:/ipfs/QmYP6zpHfv7YxbhyxayfvdCHXYW3ZLgB1zbG7gqVscLeMM"
+			]
+		}
+	},
+	"version": 1
+}
