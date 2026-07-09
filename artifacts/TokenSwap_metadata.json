@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession7.2-Error/TokenSwap.sol": "TokenSwap"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession7.2-Error/TokenSwap.sol": {
+			"keccak256": "0x4af1d4e4a553d1aa983a7ab4fc83743a464809a80f4b7b08a3d69b50cdfd8a8c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0dad57732f51d5e5708f5bfd5f626e0100af7fd86b1d4b32090a4893cd7fb4b4",
+				"dweb:/ipfs/Qma7W2AjgtWnKNEJcPriwq8viEom8HGY4o3p5EPNPFaZUq"
+			]
+		}
+	},
+	"version": 1
+}

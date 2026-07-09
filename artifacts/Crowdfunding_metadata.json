@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession7.2-Error/Crowdfunding.sol": "Crowdfunding"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession7.2-Error/Crowdfunding.sol": {
+			"keccak256": "0xa4ea41cc2ae9ca47e334aa786458490b91ee96025ebe97dad6240b9aa7cb9896",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://594e343f70449d5233de02cef2ffa86d058f53b30d34d746f1a0e670f6b9bb10",
+				"dweb:/ipfs/QmbshFeZBv9rJfr2c6z4gy7NwCKnWaw4HnDyvWq6QCZuQr"
+			]
+		}
+	},
+	"version": 1
+}

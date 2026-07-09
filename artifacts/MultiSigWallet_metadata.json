@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession7.2-Error/MultiSigWallet.sol": "MultiSigWallet"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession7.2-Error/MultiSigWallet.sol": {
+			"keccak256": "0x877b76dd914a20fb2082041573542bca823c5a0202f176162bc3bd4a7d033029",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://eb003adbcde81cb1cf546e38e8d44273ff77b54819ec8d89cac89a08426fdeb6",
+				"dweb:/ipfs/QmbSUevVLTqywkZfTkwwZASLPRvKr38yqe85x2UUAyFbLz"
+			]
+		}
+	},
+	"version": 1
+}
