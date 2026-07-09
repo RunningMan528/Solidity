@@ -9,16 +9,11 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "_owner",
+						"name": "target",
 						"type": "address"
 					}
 				],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
-			},
-			{
-				"inputs": [],
-				"name": "count",
+				"name": "safeGetValue",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -30,23 +25,21 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "increment",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "owner",
-				"outputs": [
+				"inputs": [
 					{
 						"internalType": "address",
-						"name": "",
+						"name": "target",
 						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "newValue",
+						"type": "uint256"
 					}
 				],
-				"stateMutability": "view",
+				"name": "unsafeSetValue",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -63,7 +56,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"lession8.1-Invocation/factorynew/Counter.sol": "Counter"
+			"lession8.1-Invocation/staticcall/StaticCall.sol": "StaticCall"
 		},
 		"evmVersion": "osaka",
 		"libraries": {},
@@ -77,12 +70,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"lession8.1-Invocation/factorynew/Counter.sol": {
-			"keccak256": "0x076d22d5723cc30d5603070302dbf8b20333a88000927c576c9c98627fcdb43c",
+		"lession8.1-Invocation/staticcall/StaticCall.sol": {
+			"keccak256": "0x8c174fe3566da6f35dd44dfe972abfa876690385ff51eed9deae98eba58feed7",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ebbdc1264607f4a8412d6eb1d97d118c3bbb453a71d67762cebfbcd36cd8c535",
-				"dweb:/ipfs/QmfRJdFG1drj2z1qjPUx2xPBzhB3YwHLsUqvUxphnAZRm7"
+				"bzz-raw://ecfbb378662463563531e8a9763f5494868b20fb6eade41ff8b6420311f36484",
+				"dweb:/ipfs/QmZEgFjx7eYQY81suDncfV4f7pDC6xbuPWhFh2yXwA3WJG"
 			]
 		}
 	},

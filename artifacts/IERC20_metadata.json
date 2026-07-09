@@ -9,6 +9,30 @@
 				"inputs": [
 					{
 						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "approve",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
 						"name": "account",
 						"type": "address"
 					}
@@ -21,7 +45,7 @@
 						"type": "uint256"
 					}
 				],
-				"stateMutability": "view",
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -91,7 +115,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"lession7.2-Error/LendingProtocol.sol": "IERC20"
+			"lession8.1-Invocation/IERC20.sol": "IERC20"
 		},
 		"evmVersion": "osaka",
 		"libraries": {},
@@ -105,12 +129,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"lession7.2-Error/LendingProtocol.sol": {
-			"keccak256": "0x37a151ce677030fcab175d30e11fa530792a6bfc8058ae4dfabc3ff626ae61e9",
+		"lession8.1-Invocation/IERC20.sol": {
+			"keccak256": "0x7448c79e199c143bf02a93b8f64c1cf9782be7f816bad1958b7678338c203578",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://fbde4440e3d36c5d811959e15944acf8c872aa98149b3ebc00ab84d11fb691af",
-				"dweb:/ipfs/QmZNhGzJmParDNLxdSaJesn3xZeqJwdLxnDcvCzg1Gwnac"
+				"bzz-raw://f8b2d0aeac1759dbea44830fb24a723f33e8e165b277b9d3cc3d19bd2cbdcb32",
+				"dweb:/ipfs/QmSjkM5c3NnivibfdmEXj8H9EQvbuDraBKtq73eGNVMHHf"
 			]
 		}
 	},

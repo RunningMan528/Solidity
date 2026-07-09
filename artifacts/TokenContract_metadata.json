@@ -407,7 +407,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"lession7.2-Error/TokenContract.sol": "TokenContract"
+			"lession8.1-Invocation/SwapToken.sol": "TokenContract"
 		},
 		"evmVersion": "osaka",
 		"libraries": {},
@@ -421,12 +421,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"lession7.2-Error/TokenContract.sol": {
-			"keccak256": "0x2e5ca35e88fcadb4c3a888eca299020a4a6c7774af0695552871c827228e9317",
+		"lession8.1-Invocation/SwapToken.sol": {
+			"keccak256": "0x55d9878c7092f5a828dcf09c05a43e639e7821874e51135dab006225e1718e48",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://258ffc8e9f5a7c405a58307cb987c700867ca65cc618adbf4171d36fd8a9e97a",
-				"dweb:/ipfs/QmR6G2gPUp9uuuKPCViDCAiLUVW7492koiGRPM5MCxttkY"
+				"bzz-raw://b37eba8456a3895a31fad316ace3cd77a85c0b92380e29c1a6efdee70133c69c",
+				"dweb:/ipfs/QmR3epRCZCKkqMnhF86BH9ew9eu4XER6KQwJFtaPyir1ut"
 			]
 		}
 	},

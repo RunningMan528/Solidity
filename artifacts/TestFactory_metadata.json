@@ -6,39 +6,8 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_owner",
-						"type": "address"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
-			},
-			{
 				"inputs": [],
-				"name": "count",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "increment",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "owner",
+				"name": "testCreate2",
 				"outputs": [
 					{
 						"internalType": "address",
@@ -46,7 +15,7 @@
 						"type": "address"
 					}
 				],
-				"stateMutability": "view",
+				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -63,7 +32,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"lession8.1-Invocation/factorynew/Counter.sol": "Counter"
+			"lession8.1-Invocation/factorynew/TestFactory.sol": "TestFactory"
 		},
 		"evmVersion": "osaka",
 		"libraries": {},
@@ -83,6 +52,22 @@
 			"urls": [
 				"bzz-raw://ebbdc1264607f4a8412d6eb1d97d118c3bbb453a71d67762cebfbcd36cd8c535",
 				"dweb:/ipfs/QmfRJdFG1drj2z1qjPUx2xPBzhB3YwHLsUqvUxphnAZRm7"
+			]
+		},
+		"lession8.1-Invocation/factorynew/CounterFactory.sol": {
+			"keccak256": "0xe75066d0b5e7bde382c47717a133d3d91608319ad4078b117fe895fc60709f20",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://602bc1703205b8bd95c57ceb2e0252dcb7013da6b4a0461733265c26633e13f8",
+				"dweb:/ipfs/QmWHUodEJowFk7h7AC4WBy7annwaK1oFMPtAmRdoBejZp4"
+			]
+		},
+		"lession8.1-Invocation/factorynew/TestFactory.sol": {
+			"keccak256": "0x5d81ce6d43b5646ff8d422f46e6f9082d0b624c94bb07e49512c6a61219719ec",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://47d0403447e68215ab88b46b6b2556a216c36f45ca574ca0362ec63ec7eea857",
+				"dweb:/ipfs/QmYEVLgnU83B1eYw3xbbmBuuT79yMvL67METQ8uXzqfWCk"
 			]
 		}
 	},

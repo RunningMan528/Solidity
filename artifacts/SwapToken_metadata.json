@@ -1,0 +1,257 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_tokenA",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_tokenB",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "avaliable",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "required",
+						"type": "uint256"
+					}
+				],
+				"name": "InsufficientBalance",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "TransferFailed",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "tokenIn",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "tokenOut",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amountIn",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amountOut",
+						"type": "uint256"
+					}
+				],
+				"name": "Swap",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "getContractBalances",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "balanceA",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "balanceB",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					}
+				],
+				"name": "getUserBalances",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "balanceA",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "balanceB",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amountA",
+						"type": "uint256"
+					}
+				],
+				"name": "swap",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "tokenA",
+				"outputs": [
+					{
+						"internalType": "contract IERC20",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "tokenB",
+				"outputs": [
+					{
+						"internalType": "contract IERC20",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"getContractBalances()": {
+					"returns": {
+						"balanceA": "合约持有的tokenA数量",
+						"balanceB": "合约持有的tokenB数量"
+					}
+				},
+				"getUserBalances(address)": {
+					"params": {
+						"user": "要查询的⽤户地址"
+					},
+					"returns": {
+						"balanceA": "⽤户的tokenA余额",
+						"balanceB": "⽤户的tokenB余额"
+					}
+				},
+				"swap(uint256)": {
+					"details": "用户先要调用tokenA的approve函数授权本合约使用其代币",
+					"params": {
+						"amountA": "要交换的tokenA数量"
+					}
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"getContractBalances()": {
+					"notice": "查询合约持有的代币余额"
+				},
+				"getUserBalances(address)": {
+					"notice": "查询⽤户持有的代币余额"
+				},
+				"swap(uint256)": {
+					"notice": "执行代币交换"
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession8.1-Invocation/SwapToken.sol": "SwapToken"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession8.1-Invocation/IERC20.sol": {
+			"keccak256": "0x7448c79e199c143bf02a93b8f64c1cf9782be7f816bad1958b7678338c203578",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f8b2d0aeac1759dbea44830fb24a723f33e8e165b277b9d3cc3d19bd2cbdcb32",
+				"dweb:/ipfs/QmSjkM5c3NnivibfdmEXj8H9EQvbuDraBKtq73eGNVMHHf"
+			]
+		},
+		"lession8.1-Invocation/SwapToken.sol": {
+			"keccak256": "0x7590b243f8b923f45c179b184a8ee25b2a94bedb447d3ab126c81b466869b296",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://abcf7f1e42e94f6c22e5143a0757c0dbf39666041d10ba233661a5e545752677",
+				"dweb:/ipfs/QmcXNMwEsWgcTtAZ7yK1Su7V72F11D3618EogcGtdqLUXU"
+			]
+		}
+	},
+	"version": 1
+}

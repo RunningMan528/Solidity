@@ -1,0 +1,59 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "proxy",
+						"type": "address"
+					}
+				],
+				"name": "testDelegateCall",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession8.1-Invocation/delegatecall/TestProxy.sol": "TestProxy"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession8.1-Invocation/delegatecall/TestProxy.sol": {
+			"keccak256": "0xd12a6b9a886639d340ff98aea7042dccb21237e6ec07874249ebaef25a551a72",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0c228c150d7da17dc35c9f282d065cdb94afce40877d2be178bc48e069261c27",
+				"dweb:/ipfs/QmPPPLe7VHemXEMakYBA5T8nAmM4Z8nopM7FK2NsNg19E8"
+			]
+		}
+	},
+	"version": 1
+}

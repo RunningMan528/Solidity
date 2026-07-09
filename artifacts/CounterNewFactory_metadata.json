@@ -1,0 +1,219 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "counterAddress",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					}
+				],
+				"name": "CounterCreated",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "salt",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "deployer",
+						"type": "address"
+					}
+				],
+				"name": "computeAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "counters",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "createCounter",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "salt",
+						"type": "bytes32"
+					}
+				],
+				"name": "createCounterByCreate2",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					}
+				],
+				"name": "getCounter",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getCounterCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"computeAddress(bytes32,address)": {
+					"params": {
+						"deployer": "部署者地址（通常是本合约地址）",
+						"salt": "盐值"
+					},
+					"returns": {
+						"_0": "预计算的合约地址"
+					}
+				},
+				"createCounter()": {
+					"returns": {
+						"_0": "新创建的计数器合约地址 (地址不可预测)"
+					}
+				},
+				"createCounterByCreate2(bytes32)": {
+					"params": {
+						"salt": "⽤于计算地址的盐值"
+					},
+					"returns": {
+						"_0": "新创建的计数器合约地址"
+					}
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"computeAddress(bytes32,address)": {
+					"notice": "预计算create2地址"
+				},
+				"createCounter()": {
+					"notice": "使⽤new创建新的计数器合约"
+				},
+				"createCounterByCreate2(bytes32)": {
+					"notice": "使⽤create2创建（地址可预测）"
+				},
+				"getCounter(uint256)": {
+					"notice": "查询指定索引的计数器地址"
+				},
+				"getCounterCount()": {
+					"notice": "查询所有创建的计数器数量"
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession8.1-Invocation/factorynew/CounterFactory.sol": "CounterNewFactory"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession8.1-Invocation/factorynew/Counter.sol": {
+			"keccak256": "0x076d22d5723cc30d5603070302dbf8b20333a88000927c576c9c98627fcdb43c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ebbdc1264607f4a8412d6eb1d97d118c3bbb453a71d67762cebfbcd36cd8c535",
+				"dweb:/ipfs/QmfRJdFG1drj2z1qjPUx2xPBzhB3YwHLsUqvUxphnAZRm7"
+			]
+		},
+		"lession8.1-Invocation/factorynew/CounterFactory.sol": {
+			"keccak256": "0xb5b342e08116b1947010b906b9dedeaa27b4b12d2ec9d70a65e47ad97085e219",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e10629b1c0dba4e493491e5fd70a9bf57148621e42a77c3ff3b4d86f341feb12",
+				"dweb:/ipfs/QmPDVvxBnFxXeeFJ8kV3k3jU1qimVtM22mnBkwzCUCo37F"
+			]
+		}
+	},
+	"version": 1
+}
