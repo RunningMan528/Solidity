@@ -1,0 +1,79 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "balances",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "deposit",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "withDraw",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession8.2-Security/SecureVaulCEI.sol": "SecureVaulCEI"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession8.2-Security/SecureVaulCEI.sol": {
+			"keccak256": "0xda1d307bc30c3a577b341db9f751fca7de1d5edb4cfc938915c7f1f9e92937a8",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7eeb9f3fca0be69ecc70bf87db77ed310ce72f88372e4da91e722e6e26d713bc",
+				"dweb:/ipfs/QmfCbWZr6Tc2EKViDTAr1x1ksaZoHZ3sGoWa5ifggHaZec"
+			]
+		}
+	},
+	"version": 1
+}

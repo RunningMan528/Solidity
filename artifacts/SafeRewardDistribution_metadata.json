@@ -1,0 +1,123 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "CLAIM_PREIOD",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "claimDeadline",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "claimReward",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "rewards",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "setReward",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"notice": "任务：实现安全的奖励分配合约。 要求： 1. 使⽤拉取模式 2. 避免Gas限制问题 3. 添加超时机制 4. ⽀持批量处理",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lession8.2-Security/SafeRewardDistribution.sol": "SafeRewardDistribution"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lession8.2-Security/SafeRewardDistribution.sol": {
+			"keccak256": "0x27c108d8a26b3758972b2c2f615f73e33a36c4e23607dcb9d302fefdda4281f4",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://12b1f28721b82f0efda86f4bc8ea478310e12d44024b74182aaf2e16728ea893",
+				"dweb:/ipfs/QmTdqpmWywvE3KMnUx4wjPqbYWF626LNBaNtpN8AwAUrCq"
+			]
+		}
+	},
+	"version": 1
+}
