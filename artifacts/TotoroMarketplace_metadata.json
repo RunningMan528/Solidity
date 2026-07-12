@@ -1,0 +1,961 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_feeRecipient",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "ReentrancyGuardReentrantCall",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "auctionId",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "nftContract",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "startPrice",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "endTime",
+						"type": "uint256"
+					}
+				],
+				"name": "AuctionCreated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "auctionId",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "winner",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "finalPrice",
+						"type": "uint256"
+					}
+				],
+				"name": "AuctionEnded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "auctionId",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "buyer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "BidPlaced",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "listingId",
+						"type": "uint256"
+					}
+				],
+				"name": "NFTDelisted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "listingId",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "nftContract",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					}
+				],
+				"name": "NFTListed",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "listingId",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "buyer",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					}
+				],
+				"name": "NFTSold",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "listingId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "newPrice",
+						"type": "uint256"
+					}
+				],
+				"name": "PriceUpdated",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "auctionCounter",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "auctions",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "nftContract",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "highestBid",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "highestBidder",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "endTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "active",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "listingId",
+						"type": "uint256"
+					}
+				],
+				"name": "buyNFT",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "nftContract",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "durationHours",
+						"type": "uint256"
+					}
+				],
+				"name": "createAuction",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "listingId",
+						"type": "uint256"
+					}
+				],
+				"name": "delistNFT",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "auctionId",
+						"type": "uint256"
+					}
+				],
+				"name": "endAuction",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "feeRecipient",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "auctionId",
+						"type": "uint256"
+					}
+				],
+				"name": "getAuction",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "nftContract",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "highestBid",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "highestBidder",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "endTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "active",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "listingId",
+						"type": "uint256"
+					}
+				],
+				"name": "getListing",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "nftContract",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "active",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "nftContract",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					}
+				],
+				"name": "listNFT",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "listingCounter",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "listings",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "nftContract",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "active",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "auctionId",
+						"type": "uint256"
+					}
+				],
+				"name": "placeBid",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "platformFee",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "newFee",
+						"type": "uint256"
+					}
+				],
+				"name": "setPlatformFee",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newRecipient",
+						"type": "address"
+					}
+				],
+				"name": "updateFeeRecipient",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "listingId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "newPrice",
+						"type": "uint256"
+					}
+				],
+				"name": "updatePrice",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "auctionId",
+						"type": "uint256"
+					}
+				],
+				"name": "withdrawBid",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"details": "完整的NFT交易市场合约，支持上架、购买、版税和拍卖功能",
+			"errors": {
+				"ReentrancyGuardReentrantCall()": [
+					{
+						"details": "Unauthorized reentrant call."
+					}
+				]
+			},
+			"events": {
+				"AuctionCreated(uint256,address,address,uint256,uint256,uint256)": {
+					"details": "拍卖创建事件"
+				},
+				"AuctionEnded(uint256,address,uint256)": {
+					"details": "拍卖结束事件"
+				},
+				"BidPlaced(uint256,address,uint256)": {
+					"details": "出价事件"
+				},
+				"NFTDelisted(uint256)": {
+					"details": "NFT下架事件"
+				},
+				"NFTListed(uint256,address,address,uint256,uint256)": {
+					"details": "NFT上架事件"
+				},
+				"NFTSold(uint256,address,address,uint256)": {
+					"details": "NFT售出事件"
+				},
+				"PriceUpdated(uint256,uint256)": {
+					"details": "价格更新事件"
+				}
+			},
+			"kind": "dev",
+			"methods": {
+				"buyNFT(uint256)": {
+					"details": "购买NFT",
+					"params": {
+						"listingId": "挂单ID"
+					}
+				},
+				"constructor": {
+					"details": "构造函数",
+					"params": {
+						"_feeRecipient": "手续费接收地址"
+					}
+				},
+				"createAuction(address,uint256,uint256,uint256)": {
+					"details": "创建拍卖",
+					"params": {
+						"durationHours": "拍卖时长（小时）",
+						"nftContract": "NFT合约地址",
+						"startPrice": "起拍价（wei）",
+						"tokenId": "Token ID"
+					},
+					"returns": {
+						"_0": "auctionId 拍卖ID"
+					}
+				},
+				"delistNFT(uint256)": {
+					"details": "下架NFT",
+					"params": {
+						"listingId": "挂单ID"
+					}
+				},
+				"endAuction(uint256)": {
+					"details": "结束拍卖",
+					"params": {
+						"auctionId": "拍卖ID"
+					}
+				},
+				"getAuction(uint256)": {
+					"details": "查询拍卖信息",
+					"params": {
+						"auctionId": "拍卖ID"
+					},
+					"returns": {
+						"active": "是否激活",
+						"endTime": "结束时间",
+						"highestBid": "当前最高出价",
+						"highestBidder": "当前最高出价者",
+						"nftContract": "NFT合约地址",
+						"seller": "卖家地址",
+						"startPrice": "起拍价",
+						"tokenId": "Token ID"
+					}
+				},
+				"getListing(uint256)": {
+					"details": "查询挂单信息",
+					"params": {
+						"listingId": "挂单ID"
+					},
+					"returns": {
+						"active": "是否激活",
+						"nftContract": "NFT合约地址",
+						"price": "价格",
+						"seller": "卖家地址",
+						"tokenId": "Token ID"
+					}
+				},
+				"listNFT(address,uint256,uint256)": {
+					"details": "上架NFT",
+					"params": {
+						"nftContract": "NFT合约地址",
+						"price": "售价（wei）",
+						"tokenId": "Token ID"
+					},
+					"returns": {
+						"_0": "listingId 挂单ID"
+					}
+				},
+				"placeBid(uint256)": {
+					"details": "出价",
+					"params": {
+						"auctionId": "拍卖ID"
+					}
+				},
+				"setPlatformFee(uint256)": {
+					"details": "设置平台手续费",
+					"params": {
+						"newFee": "新的手续费（基点）"
+					}
+				},
+				"updateFeeRecipient(address)": {
+					"details": "更新手续费接收地址",
+					"params": {
+						"newRecipient": "新的接收地址"
+					}
+				},
+				"updatePrice(uint256,uint256)": {
+					"details": "更新挂单价格",
+					"params": {
+						"listingId": "挂单ID",
+						"newPrice": "新价格（wei）"
+					}
+				},
+				"withdrawBid(uint256)": {
+					"details": "提取出价退款",
+					"params": {
+						"auctionId": "拍卖ID"
+					}
+				}
+			},
+			"title": "NFTMarketplace",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"buyNFT(uint256)": {
+					"notice": "需要支付足够的ETH，多余部分会自动退还"
+				},
+				"endAuction(uint256)": {
+					"notice": "任何人都可以在拍卖结束后调用此函数进行结算"
+				},
+				"placeBid(uint256)": {
+					"notice": "需要支付足够的ETH，出价必须高于当前最高出价的5%"
+				},
+				"setPlatformFee(uint256)": {
+					"notice": "只有手续费接收地址可以调用"
+				},
+				"updateFeeRecipient(address)": {
+					"notice": "只有当前手续费接收地址可以调用"
+				},
+				"withdrawBid(uint256)": {
+					"notice": "被超越的出价者可以提取他们的资金"
+				}
+			},
+			"notice": "使用ReentrancyGuard防止重入攻击",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lessionA10.1-NFT/TotoroMarketplace.sol": "TotoroMarketplace"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@openzeppelin/contracts/interfaces/draft-IERC6093.sol": {
+			"keccak256": "0xa906ad0d1b75597614c1323665c76b8a37245162edbd814088c6a287008576aa",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://eccd0cebbcd826d6f07bca500d3c3b22ce200d3773aed69e2e24ea8c8cd12656",
+				"dweb:/ipfs/QmR9enuSH7n5YDoBjUKvxCNjp1vPzXSjruEH3KkwUzET9c"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC721/ERC721.sol": {
+			"keccak256": "0xf6bb0dc431a9c50e25756412ec14cfcd4dc61dd40b8dc0e1b58ec09fce6d5564",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://eb87fef7e8ed754b8600cd5d42e4f23128059006368ffd19e4d50cc166471ee5",
+				"dweb:/ipfs/Qmc1vy1cevKreGUsG7S79gyhNvDtPnNz9qG47eYVHmMKLs"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+			"keccak256": "0xf78f05f3b8c9f75570e85300d7b4600d7f6f6a198449273f31d44c1641adb46f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e28b872613b45e0e801d4995aa4380be2531147bfe2d85c1d6275f1de514fba3",
+				"dweb:/ipfs/QmeeFcfShHYaS3BdgVj78nxR28ZaVUwbvr66ud8bT6kzw9"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
+			"keccak256": "0x88cd5e3bee2e8c36b8d9058fbcaa81ad5704281b25634122234b55ea853d8055",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8dc7e7ab5b8ea36c15027ab04221b05d1c970f47a53e9fd47ead8ca665d49c7e",
+				"dweb:/ipfs/Qmeeph7fsDyfRr8vb2L8KcDEmKPb224TAayMvgqgGAnqpL"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
+			"keccak256": "0xf46268c37522320bb2119a5a394bc5c739a95c0c574c8d08e8c643f4d06e5c76",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://517e4b295f35b9947c72ad7379a6089439ece7bb6f4a2ea0a159da13046c039e",
+				"dweb:/ipfs/QmZXzkSfLUbvujig3zVbpDHykpHhqLpvQtdiN3B5j4TA3u"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC721/utils/ERC721Utils.sol": {
+			"keccak256": "0xc7efbc23214ad7dced8bf2249460f4bda114d57f6a0079f84040654280f455bd",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1f5bd44efca8c8c0d74439e7b808d1f9c4af1df78f91fef8e8bbca8104645435",
+				"dweb:/ipfs/Qmb42XSd8MKsEitp42sZkSFGqDRigk6QgGXtiJyJqUZJJ6"
+			]
+		},
+		"@openzeppelin/contracts/utils/Bytes.sol": {
+			"keccak256": "0x617eebfcd8f1e3ea48f0142e3b2da63f6d1cfbce43b906f429bfaea2abe77cfa",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a49dc1fff7dab2dcc1eb1fca1c7dfaba8f609c8f7b2067e931a0beb5c680cb5e",
+				"dweb:/ipfs/QmVRenExVjZL1MPqdJfkQFqYFodLG5DUzV99fFAp5naQKX"
+			]
+		},
+		"@openzeppelin/contracts/utils/Context.sol": {
+			"keccak256": "0x3dcd533a3f709bda89bb8e649eb97aed96578e606f3796609544b1dcff975a0b",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://83fa9b15077fd2f33f6c175d694e2f7ae9c9a289c7feaca40aa7d6feb8d87c26",
+				"dweb:/ipfs/QmQLfKCJ7mjiEeCGN1sHgWT8wjAMbAmBqcBVoQQyUZa5ws"
+			]
+		},
+		"@openzeppelin/contracts/utils/Panic.sol": {
+			"keccak256": "0x65fd7c9cac0812d510bbaac59b007da1df6f3820f939fca04fd2b7ed07e341c6",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f30f7cf8b553278b1bbad1f6aaf4b227b98b1532b3c16dbca92d815d627779df",
+				"dweb:/ipfs/QmTkA1v7mrd2ymdTcPYFuNjguKhQx99npcPYKAdMfgfKvB"
+			]
+		},
+		"@openzeppelin/contracts/utils/ReentrancyGuard.sol": {
+			"keccak256": "0x5ff62ed93017c83db242ad603880aa8522fea51f4f7172070ef1656bcc00336d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c5f35f68258d00deb6fa1083301c05667c774dc6ecccdd96b0b88c185e5f5fac",
+				"dweb:/ipfs/QmSHVaxBEF9ZB7NVkt7GxcSkgEsqiuqV7NPPMqb81uY5Cg"
+			]
+		},
+		"@openzeppelin/contracts/utils/StorageSlot.sol": {
+			"keccak256": "0xcf74f855663ce2ae00ed8352666b7935f6cddea2932fdf2c3ecd30a9b1cd0e97",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://9f660b1f351b757dfe01438e59888f31f33ded3afcf5cb5b0d9bf9aa6f320a8b",
+				"dweb:/ipfs/QmarDJ5hZEgBtCmmrVzEZWjub9769eD686jmzb2XpSU1cM"
+			]
+		},
+		"@openzeppelin/contracts/utils/Strings.sol": {
+			"keccak256": "0x47b4888122efd745b695406f8f441688909b038cd31bec706043e4f72fdd8331",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6a40cf835dac176e60422099e3fca8901f92ff853d1ae655a30401c72de0ad8c",
+				"dweb:/ipfs/QmZ8wbcpy9tuku3z6zic8TcQihUG5MSZz5qFwoXx92uAgF"
+			]
+		},
+		"@openzeppelin/contracts/utils/introspection/ERC165.sol": {
+			"keccak256": "0x2d9dc2fe26180f74c11c13663647d38e259e45f95eb88f57b61d2160b0109d3e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://81233d1f98060113d9922180bb0f14f8335856fe9f339134b09335e9f678c377",
+				"dweb:/ipfs/QmWh6R35SarhAn4z2wH8SU456jJSYL2FgucfTFgbHJJN4E"
+			]
+		},
+		"@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+			"keccak256": "0x8891738ffe910f0cf2da09566928589bf5d63f4524dd734fd9cedbac3274dd5c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://971f954442df5c2ef5b5ebf1eb245d7105d9fbacc7386ee5c796df1d45b21617",
+				"dweb:/ipfs/QmadRjHbkicwqwwh61raUEapaVEtaLMcYbQZWs9gUkgj3u"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/Math.sol": {
+			"keccak256": "0xe4d62b847a062fd8d6fc0a9824664c08ed26dc6d1883f95f27f3c4e9ce1f7e82",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://58463f0cef44b603346992bd8c21ac197ea9a9d271a0a358d7411d0d661600c8",
+				"dweb:/ipfs/QmPf1mtcdwFwz4HzW4XgogY5dwmTP7cmENzvjWR9hzFmaj"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/SafeCast.sol": {
+			"keccak256": "0x877bc80e4861002ec9d72b7b0e9f690323d1ec149d9d02744754da282aeb14a4",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ff8460e8af5cf34684f97dbd05e278965f775679b6750b09ea411ba7cf1e24c7",
+				"dweb:/ipfs/QmVPUXEFNgd9FhcknEca9CrTTbSsMmRzx5PRVrJovZ6smt"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/SignedMath.sol": {
+			"keccak256": "0x7c35afe4f4b7e64ea6efa5216f51790d8ce80cd764a00790203a59ebf20202ec",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0b264b01df570c48603e16066aea73d3200c78523f9d94dd587a61eafa33705c",
+				"dweb:/ipfs/QmayVg47dBKddrgrgsbr4Wu8hQBWZk5oMpiUtXKz1uEo1v"
+			]
+		},
+		"lessionA10.1-NFT/TotoroMarketplace.sol": {
+			"keccak256": "0x390ad037486de82254c95e16fc11a8372582186d0e45228d0b6f31990b9bb856",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://23748af2818d7d71d0873417f57f52764792bf2a5456469d5b19f964d2f5f805",
+				"dweb:/ipfs/QmS6WVZ9wiv3uAdPX2cu4w2Zm2mSRYBYZs7JjSDjffvNpS"
+			]
+		}
+	},
+	"version": 1
+}

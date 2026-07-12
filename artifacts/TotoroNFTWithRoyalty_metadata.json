@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lessionA10.1-NFT/TotoroNFTWithRoyalty.sol": "TotoroNFTWithRoyalty"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lessionA10.1-NFT/TotoroNFTWithRoyalty.sol": {
+			"keccak256": "0xe419a262596f5681b053fe8f65884a0e08b615b64471183bdfa1098a3e417100",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ed569564bc5106af7515cc338c067129e1911fee0ad38f27a106eedf7419d1b3",
+				"dweb:/ipfs/QmTXRXdQW1qQycPZQTyT8QUtcGiA5Qh7czL12CURA9tn5h"
+			]
+		}
+	},
+	"version": 1
+}
