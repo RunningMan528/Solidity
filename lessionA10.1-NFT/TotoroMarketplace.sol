@@ -243,11 +243,11 @@ contract TotoroMarketplace is ReentrancyGuard {
             require(successRoyalty, "Royalty transfer failed");
         }
 
-        (bool successSeller,) = listing.seller.call{value : sellerAmount}("");
-        require(successSeller, "Transfer to seller failed!");
-
         (bool successFee,) = feeRecipient.call{value: fee}("");
         require(successFee, "Transfer fee failed");
+
+        (bool successSeller,) = listing.seller.call{value : sellerAmount}("");
+        require(successSeller, "Transfer to seller failed!");
 
         // 退还多余资金
         if (msg.value > listing.price) {
@@ -422,11 +422,11 @@ contract TotoroMarketplace is ReentrancyGuard {
                 require(successRoyalty, "Royalty transfer failed");
             }
 
-            (bool successSeller,) = auction.seller.call{value:sellerAmount}("");
-            require(successSeller, "Seller Transfer failed");
-
             (bool successFee,) = feeRecipient.call{value : fee}("");
             require(successFee,"Fee transfer failed");
+
+            (bool successSeller,) = auction.seller.call{value:sellerAmount}("");
+            require(successSeller, "Seller Transfer failed");
 
             emit AuctionEnded(auctionId, auction.highestBidder, auction.highestBid); 
         } else {
