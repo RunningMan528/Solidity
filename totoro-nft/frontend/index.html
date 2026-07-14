@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#12372a" />
+    <title>Totoro Market | Sepolia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Totoro Market home">TOTORO<span>MARKET</span></a>
+      <div class="network"><i></i> Sepolia test network</div>
+      <button id="connectButton" class="button button-primary">连接钱包</button>
+    </header>
+
+    <main id="top">
+      <section class="masthead">
+        <p class="eyebrow">ON-CHAIN NFT DESK</p>
+        <h1>从铸造，到成交。</h1>
+        <p class="intro">用一个 Sepolia 钱包完整走通 TotoroNFT 的一级发行、固定价交易和公开拍卖。</p>
+        <div class="address-strip">
+          <span>NFT <code id="nftAddress"></code></span>
+          <span>MARKET <code id="marketAddress"></code></span>
+          <a id="etherscanLink" target="_blank" rel="noreferrer">在 Etherscan 查看</a>
+        </div>
+      </section>
+
+      <section class="metrics" aria-label="链上概览">
+        <article><span>已铸造</span><strong id="supplyValue">--</strong><small>TotoroNFT</small></article>
+        <article><span>铸造价格</span><strong id="mintPriceValue">--</strong><small>每枚 NFT</small></article>
+        <article><span>平台费率</span><strong id="feeValue">--</strong><small>成交时收取</small></article>
+        <article><span>钱包余额</span><strong id="balanceValue">未连接</strong><small id="walletLabel">等待 MetaMask</small></article>
+      </section>
+
+      <div id="status" class="status" role="status">正在读取 Sepolia 链上数据...</div>
+
+      <section class="workbench" aria-label="业务操作">
+        <article class="panel mint-panel">
+          <div class="panel-heading"><span class="step">01</span><div><h2>铸造</h2><p>创建一个带 IPFS 元数据的 TotoroNFT。</p></div></div>
+          <form id="mintForm">
+            <label>元数据 URI
+              <input id="mintUri" value="ipfs://bafkreie74ddfjb6sxeib5vtqwlo74x2zqmdubptbvzlegw3mvqzr2ybkee" required />
+            </label>
+            <button class="button button-primary" type="submit">支付 0.01 ETH 并铸造</button>
+          </form>
+        </article>
+
+        <article class="panel">
+          <div class="panel-heading"><span class="step">02</span><div><h2>固定价格上架</h2><p>授权市场后创建一个 ETH 计价挂单。</p></div></div>
+          <form id="listForm">
+            <div class="field-row">
+              <label>Token ID<input id="listTokenId" type="number" min="1" placeholder="例如 1" required /></label>
+              <label>售价 (ETH)<input id="listPrice" type="number" min="0.000001" step="0.001" placeholder="例如 0.1" required /></label>
+            </div>
+            <button class="button button-secondary" type="submit">授权并上架</button>
+          </form>
+        </article>
+
+        <article class="panel">
+          <div class="panel-heading"><span class="step">03</span><div><h2>创建拍卖</h2><p>起拍价之外，每次出价至少提高 5%。</p></div></div>
+          <form id="auctionForm">
+            <div class="field-row three">
+              <label>Token ID<input id="auctionTokenId" type="number" min="1" placeholder="例如 2" required /></label>
+              <label>起拍价 (ETH)<input id="auctionPrice" type="number" min="0.000001" step="0.001" placeholder="例如 0.05" required /></label>
+              <label>时长 (小时)<input id="auctionDuration" type="number" min="2" step="1" value="2" required /></label>
+            </div>
+            <button class="button button-secondary" type="submit">授权并创建拍卖</button>
+          </form>
+        </article>
+      </section>
+
+      <section class="market-section">
+        <div class="section-heading"><div><p class="eyebrow">LIVE ON SEPOLIA</p><h2>市场看板</h2></div><button id="refreshButton" class="icon-button" title="刷新链上数据" aria-label="刷新链上数据">↻</button></div>
+        <div class="market-grid">
+          <article class="market-column">
+            <div class="column-title"><h3>固定价格挂单</h3><span id="listingCount">0</span></div>
+            <div id="listings" class="cards"><p class="empty">暂无挂单</p></div>
+          </article>
+          <article class="market-column">
+            <div class="column-title"><h3>进行中的拍卖</h3><span id="auctionCount">0</span></div>
+            <div id="auctions" class="cards"><p class="empty">暂无拍卖</p></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="guide">
+        <p class="eyebrow">TESTING RUNBOOK</p>
+        <h2>建议的端到端测试顺序</h2>
+        <ol>
+          <li><b>铸造</b><span>连接拥有 Sepolia ETH 的钱包，以默认 URI 铸造，等待交易确认并记录 Token ID。</span></li>
+          <li><b>固定价交易</b><span>使用 Token ID 上架；切换至第二个钱包购买，确认 NFT 所有者已更新。</span></li>
+          <li><b>拍卖</b><span>铸造另一枚 NFT 后创建 2 小时拍卖；两个不同买家依次出价，较低出价者提取退款。</span></li>
+          <li><b>结算</b><span>时间到期后由任意账户结算，确认最高出价者收到 NFT，卖家和手续费地址收到 ETH。</span></li>
+        </ol>
+      </section>
+    </main>
+
+    <footer>Totoro Market is a Sepolia testing interface. Transactions are irreversible once confirmed.</footer>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
