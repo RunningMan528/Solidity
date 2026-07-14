@@ -1,0 +1,15 @@
+{
+  "name": "Totoro NFT #1",
+  "description": "这是第1个 Totoro NFT",
+  "image": "ipfs://bafkreie6husr3ayqn7xlv5dvjke5wjbp74a62peal4icpnec3k5dwzchly",
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Blue"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

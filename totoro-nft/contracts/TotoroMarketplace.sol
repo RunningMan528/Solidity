@@ -7,22 +7,25 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 /**
-* @title IERC2981
-* @dev ERC2981版税标准接口
-*/
+ * @title IERC2981
+ * @dev ERC2981版税标准接口
+ */
 interface IERC2981 is IERC165 {
-    function royaltyInfo(uint tokenId,uint salePrice) external view returns (address receiver,uint royaltyAmount);
+    function royaltyInfo(
+        uint tokenId,
+        uint salePrice
+    ) external view returns (address receiver, uint royaltyAmount);
 }
 
 /**
-* @title NFTMarketplace
-* @dev 完整的NFT交易市场合约，支持上架、购买、版税和拍卖功能
-* @notice 使用ReentrancyGuard防止重入攻击
-*/
+ * @title NFTMarketplace
+ * @dev 完整的NFT交易市场合约，支持上架、购买、版税和拍卖功能
+ * @notice 使用ReentrancyGuard防止重入攻击
+ */
 contract TotoroMarketplace is ReentrancyGuard {
     /**
-    * @dev 挂单结构体
-    */
+     * @dev 挂单结构体
+     */
     struct Listing {
         address seller; // 卖家地址
         address nftContract; // NFT合约地址
@@ -32,8 +35,8 @@ contract TotoroMarketplace is ReentrancyGuard {
     }
 
     /**
-    * @dev 拍卖结构体
-    */
+     * @dev 拍卖结构体
+     */
     struct Auction {
         address seller; // 卖家地址
         address nftContract; // NFT合约地址
@@ -46,15 +49,15 @@ contract TotoroMarketplace is ReentrancyGuard {
     }
 
     // 挂单映射
-    mapping (uint => Listing) public listings;
+    mapping(uint => Listing) public listings;
     uint public listingCounter;
 
     // 拍卖映射
-    mapping (uint => Auction) public auctions;
+    mapping(uint => Auction) public auctions;
     uint public auctionCounter;
 
     // 待退款映射（用于拍卖）
-    mapping (uint => mapping (address => uint)) pendingReturns;
+    mapping(uint => mapping(address => uint)) pendingReturns;
 
     // 平台手续费（基点：10000 = 100%）
     uint public platformFee = 250; // 2.5%
@@ -70,8 +73,9 @@ contract TotoroMarketplace is ReentrancyGuard {
         address indexed seller,
         address indexed nftContract,
         uint tokenId,
-        uint price);
-    
+        uint price
+    );
+
     /**
      * @dev NFT下架事件
      */
@@ -80,7 +84,7 @@ contract TotoroMarketplace is ReentrancyGuard {
     /**
      * @dev 价格更新事件
      */
-    event PriceUpdated(uint indexed listingId,uint newPrice);
+    event PriceUpdated(uint indexed listingId, uint newPrice);
 
     /**
      * @dev NFT售出事件
@@ -89,7 +93,8 @@ contract TotoroMarketplace is ReentrancyGuard {
         uint indexed listingId,
         address indexed buyer,
         address indexed seller,
-        uint price);
+        uint price
+    );
 
     /**
      * @dev 拍卖创建事件
@@ -106,11 +111,7 @@ contract TotoroMarketplace is ReentrancyGuard {
     /**
      * @dev 出价事件
      */
-    event BidPlaced(
-        uint indexed auctionId,
-        address indexed buyer,
-        uint amount
-    );
+    event BidPlaced(uint indexed auctionId, address indexed buyer, uint amount);
 
     /**
      * @dev 拍卖结束事件
@@ -125,10 +126,10 @@ contract TotoroMarketplace is ReentrancyGuard {
      * @dev 构造函数
      * @param _feeRecipient 手续费接收地址
      */
-     constructor(address _feeRecipient) {
+    constructor(address _feeRecipient) {
         require(_feeRecipient != address(0), "Invalid fee recipient!");
         feeRecipient = _feeRecipient;
-     }
+    }
 
     /**
      * @dev 上架NFT
@@ -152,9 +153,10 @@ contract TotoroMarketplace is ReentrancyGuard {
 
         // 验证授权
         require(
-            nft.getApproved(tokenId) == address(this) || 
-            nft.isApprovedForAll(msg.sender, address(this)), 
-            "Marketplace not approved");
+            nft.getApproved(tokenId) == address(this) ||
+                nft.isApprovedForAll(msg.sender, address(this)),
+            "Marketplace not approved"
+        );
 
         // 创建挂单
         listingCounter++;
@@ -166,8 +168,8 @@ contract TotoroMarketplace is ReentrancyGuard {
             active: true
         });
 
-        emit NFTListed(listingCounter,msg.sender, nftContract, tokenId, price);
-        
+        emit NFTListed(listingCounter, msg.sender, nftContract, tokenId, price);
+
         return listingCounter;
     }
 
@@ -180,7 +182,7 @@ contract TotoroMarketplace is ReentrancyGuard {
 
         require(listing.active, "Listing not active!");
         require(listing.seller == msg.sender, "Not the seller!");
-        
+
         listing.active = false;
         emit NFTDelisted(listingId);
     }
@@ -190,7 +192,7 @@ contract TotoroMarketplace is ReentrancyGuard {
      * @param listingId 挂单ID
      * @param newPrice 新价格（wei）
      */
-    function updatePrice(uint listingId,uint newPrice) external {
+    function updatePrice(uint listingId, uint newPrice) external {
         require(newPrice > 0, "Price must be greater than 0");
 
         Listing storage listing = listings[listingId];
@@ -207,7 +209,7 @@ contract TotoroMarketplace is ReentrancyGuard {
      * @param listingId 挂单ID
      * @notice 需要支付足够的ETH，多余部分会自动退还
      */
-    function buyNFT(uint listingId) external payable nonReentrant{
+    function buyNFT(uint listingId) external payable nonReentrant {
         Listing storage listing = listings[listingId];
 
         // 检查挂单状态
@@ -222,10 +224,11 @@ contract TotoroMarketplace is ReentrancyGuard {
         uint fee = (listing.price * platformFee) / 10000;
 
         // 获取版税信息
-        (address royaltyReceiver,uint royaltyAmount) = _getRoyaltyInfo(
-            listing.nftContract, 
-            listing.tokenId, 
-            listing.price);
+        (address royaltyReceiver, uint royaltyAmount) = _getRoyaltyInfo(
+            listing.nftContract,
+            listing.tokenId,
+            listing.price
+        );
 
         // 计算卖家收益
         uint sellerAmount = listing.price - fee - royaltyAmount;
@@ -239,19 +242,23 @@ contract TotoroMarketplace is ReentrancyGuard {
 
         // 资金分配：版税 -> 平台手续费 -> 卖家收益
         if (royaltyAmount > 0 && royaltyReceiver != address(0)) {
-            (bool successRoyalty,) = royaltyReceiver.call{value : royaltyAmount}("");
+            (bool successRoyalty, ) = royaltyReceiver.call{
+                value: royaltyAmount
+            }("");
             require(successRoyalty, "Royalty transfer failed");
         }
 
-        (bool successFee,) = feeRecipient.call{value: fee}("");
+        (bool successFee, ) = feeRecipient.call{value: fee}("");
         require(successFee, "Transfer fee failed");
 
-        (bool successSeller,) = listing.seller.call{value : sellerAmount}("");
+        (bool successSeller, ) = listing.seller.call{value: sellerAmount}("");
         require(successSeller, "Transfer to seller failed!");
 
         // 退还多余资金
         if (msg.value > listing.price) {
-            (bool successRefound,) = msg.sender.call{value : msg.value - listing.price}("");
+            (bool successRefound, ) = msg.sender.call{
+                value: msg.value - listing.price
+            }("");
             require(successRefound, "Refound failed");
         }
 
@@ -270,10 +277,16 @@ contract TotoroMarketplace is ReentrancyGuard {
     function _getRoyaltyInfo(
         address nftContract,
         uint tokenId,
-        uint salePrice) internal view returns (address receiver,uint royaltyAmount) {
+        uint salePrice
+    ) internal view returns (address receiver, uint royaltyAmount) {
         // 检查NFT合约是否支持ERC2981
-        if (IERC165(nftContract).supportsInterface(type(IERC2981).interfaceId)) {
-            (receiver,royaltyAmount) = IERC2981(nftContract).royaltyInfo(tokenId,salePrice);
+        if (
+            IERC165(nftContract).supportsInterface(type(IERC2981).interfaceId)
+        ) {
+            (receiver, royaltyAmount) = IERC2981(nftContract).royaltyInfo(
+                tokenId,
+                salePrice
+            );
         } else {
             // 不支持版税，返回零地址和零金额
             receiver = address(0);
@@ -306,10 +319,11 @@ contract TotoroMarketplace is ReentrancyGuard {
 
         // 验证授权
         require(
-            nft.getApproved(tokenId) == address(this) || 
-            nft.isApprovedForAll(msg.sender, address(this)), 
-            "Marketplace not approved");
-        
+            nft.getApproved(tokenId) == address(this) ||
+                nft.isApprovedForAll(msg.sender, address(this)),
+            "Marketplace not approved"
+        );
+
         // 创建拍卖
         auctionCounter++;
         uint endTime = block.timestamp + (durationHours * 1 hours);
@@ -325,13 +339,14 @@ contract TotoroMarketplace is ReentrancyGuard {
         });
 
         emit AuctionCreated(
-            auctionCounter, 
-            msg.sender, 
-            nftContract, 
-            tokenId, 
-            startPrice, 
-            endTime);
-            
+            auctionCounter,
+            msg.sender,
+            nftContract,
+            tokenId,
+            startPrice,
+            endTime
+        );
+
         return auctionCounter;
     }
 
@@ -352,14 +367,15 @@ contract TotoroMarketplace is ReentrancyGuard {
         if (auction.highestBid == 0) {
             minBid = auction.startPrice;
         } else {
-            minBid = auction.highestBid + (auction.highestBid * 5 / 100); // 5% increment
+            minBid = auction.highestBid + ((auction.highestBid * 5) / 100); // 5% increment
         }
 
         require(msg.value >= minBid, "Bid too low");
 
         // 如果有之前的出价者，记录他们的待退款金额
         if (auction.highestBidder != address(0)) {
-            pendingReturns[auctionId][auction.highestBidder] += auction.highestBid;
+            pendingReturns[auctionId][auction.highestBidder] += auction
+                .highestBid;
         }
 
         // 更新最高出价
@@ -367,7 +383,6 @@ contract TotoroMarketplace is ReentrancyGuard {
         auction.highestBidder = msg.sender;
 
         emit BidPlaced(auctionId, msg.sender, msg.value);
-
     }
 
     /**
@@ -381,7 +396,7 @@ contract TotoroMarketplace is ReentrancyGuard {
 
         pendingReturns[auctionId][msg.sender] = 0;
 
-        (bool success,) = msg.sender.call{value: amount}("");
+        (bool success, ) = msg.sender.call{value: amount}("");
         require(success, "Bidder withdraw failed");
     }
 
@@ -402,10 +417,11 @@ contract TotoroMarketplace is ReentrancyGuard {
             // 有人出价，进行结算
             uint fee = (auction.highestBid * platformFee) / 10000;
 
-            (address royaltyReceiver,uint royaltyAmount) = _getRoyaltyInfo(
-                auction.nftContract, 
-                auction.tokenId, 
-                auction.highestBid);
+            (address royaltyReceiver, uint royaltyAmount) = _getRoyaltyInfo(
+                auction.nftContract,
+                auction.tokenId,
+                auction.highestBid
+            );
 
             uint sellerAmount = auction.highestBid - fee - royaltyAmount;
 
@@ -418,17 +434,25 @@ contract TotoroMarketplace is ReentrancyGuard {
 
             // 资金分配
             if (royaltyAmount > 0 && royaltyReceiver != address(0)) {
-                (bool successRoyalty,) = royaltyReceiver.call{value:royaltyAmount}("");
+                (bool successRoyalty, ) = royaltyReceiver.call{
+                    value: royaltyAmount
+                }("");
                 require(successRoyalty, "Royalty transfer failed");
             }
 
-            (bool successFee,) = feeRecipient.call{value : fee}("");
-            require(successFee,"Fee transfer failed");
+            (bool successFee, ) = feeRecipient.call{value: fee}("");
+            require(successFee, "Fee transfer failed");
 
-            (bool successSeller,) = auction.seller.call{value:sellerAmount}("");
+            (bool successSeller, ) = auction.seller.call{value: sellerAmount}(
+                ""
+            );
             require(successSeller, "Seller Transfer failed");
 
-            emit AuctionEnded(auctionId, auction.highestBidder, auction.highestBid); 
+            emit AuctionEnded(
+                auctionId,
+                auction.highestBidder,
+                auction.highestBid
+            );
         } else {
             // 没有人出价，拍卖流拍
             emit AuctionEnded(auctionId, address(0), 0);
@@ -444,12 +468,19 @@ contract TotoroMarketplace is ReentrancyGuard {
      * @return price 价格
      * @return active 是否激活
      */
-    function getListing(uint listingId) external view returns (
-        address seller,
-        address nftContract,
-        uint256 tokenId,
-        uint256 price,
-        bool active) {
+    function getListing(
+        uint listingId
+    )
+        external
+        view
+        returns (
+            address seller,
+            address nftContract,
+            uint256 tokenId,
+            uint256 price,
+            bool active
+        )
+    {
         Listing memory listing = listings[listingId];
         return (
             listing.seller,
@@ -472,15 +503,22 @@ contract TotoroMarketplace is ReentrancyGuard {
      * @return endTime 结束时间
      * @return active 是否激活
      */
-    function getAuction(uint auctionId) external view returns (
-        address seller,
-        address nftContract,
-        uint256 tokenId,
-        uint256 startPrice,
-        uint256 highestBid,
-        address highestBidder,
-        uint256 endTime,
-        bool active) {
+    function getAuction(
+        uint auctionId
+    )
+        external
+        view
+        returns (
+            address seller,
+            address nftContract,
+            uint256 tokenId,
+            uint256 startPrice,
+            uint256 highestBid,
+            address highestBidder,
+            uint256 endTime,
+            bool active
+        )
+    {
         Auction memory auction = auctions[auctionId];
         return (
             auction.seller,
@@ -501,7 +539,7 @@ contract TotoroMarketplace is ReentrancyGuard {
      */
     function setPlatformFee(uint newFee) external {
         require(msg.sender == feeRecipient, "Not fee Recipient");
-        require(newFee <= 1000,"Fee too high");
+        require(newFee <= 1000, "Fee too high");
 
         platformFee = newFee;
     }
@@ -516,5 +554,4 @@ contract TotoroMarketplace is ReentrancyGuard {
         require(newRecipient != address(0), "Invalid address");
         feeRecipient = newRecipient;
     }
-
-}   
+}
