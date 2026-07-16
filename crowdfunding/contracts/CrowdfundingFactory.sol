@@ -28,7 +28,7 @@ contract CrowdfundingFactory {
         uint256 deadline
     );
 
-    function createCampaigin(
+    function createCampaign(
         string memory _name,
         uint256 _goal,
         uint256 _durationInDays

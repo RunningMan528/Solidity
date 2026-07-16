@@ -47,18 +47,18 @@ contract CrowdfundingCampaign {
     /// @dev 修饰符定义
     /// @notice 仅所有者修饰符:确保只有活动创建者可以调用
     modifier onlyOwner() {
-        require(msg.sender == owner, "CrowdfundingCampaign:not owner");
+        require(msg.sender == owner, "CrowdfundingCampaign: not owner");
         _;
     }
     /// @notice 状态检查修饰符:确保活动处于指定状态
     /// @param _state 要求的状态
     modifier inState(State _state) {
-        require(state == _state, "CrowdfundingCampaign:invalid state");
+        require(state == _state, "CrowdfundingCampaign: invalid state");
         _;
     }
     /// @notice 未过期修饰符:确保活动尚未过期
     modifier notExpired() {
-        require(block.timestamp < deadline, "CrowdfundingCampaign:expired");
+        require(block.timestamp < deadline, "CrowdfundingCampaign: expired");
         _;
     }
 
@@ -74,18 +74,18 @@ contract CrowdfundingCampaign {
         uint256 _durationInDays
     ) {
         // 验证创建者地址不能为零地址
-        require(_owner != address(0), "CrowdfundingCampaign:invalid owner");
+        require(_owner != address(0), "CrowdfundingCampaign: invalid owner");
         // 验证活动名称不能为空
         require(
             bytes(_name).length != 0,
-            "CrowdfundingCampaign:name cannot be empty"
+            "CrowdfundingCampaign: name cannot be empty"
         );
         // 验证目标金额必须大于0
-        require(_goal > 0, "CrowdfundingCampaign:goal must be positive");
+        require(_goal > 0, "CrowdfundingCampaign: goal must be positive");
         // 验证持续时间必须在1-90天之间
         require(
             _durationInDays >= 1 && _durationInDays <= 90,
-            "CrowdfundingCampaign:invalid duration"
+            "CrowdfundingCampaign: invalid duration"
         );
 
         // 设置创建地址
@@ -120,7 +120,7 @@ contract CrowdfundingCampaign {
         // 验证贡献资金必须大于0
         require(
             msg.value > 0,
-            "CrowdfundingCampaign:contribution must be positive"
+            "CrowdfundingCampaign: contribution must be positive"
         );
         // 追踪新贡献者:如果是首次贡献,将其添加到贡献者数组
         if (contributions[msg.sender] == 0) {
@@ -140,13 +140,13 @@ contract CrowdfundingCampaign {
      * @dev 完成活动函数(统一结算)
      * @notice 在截止时间后调用,根据是否达到目标确定最终状态(成功或失败)
      * @notice 只能在活动进行中状态时调用
-     * @notice 一旦结算成功哦/失败后,将无法再次调用
+     * @notice 一旦结算成功/失败后,将无法再次调用
      */
     function finalize() external inState(State.Active) {
         // 验证当前时间必须已经超过截止日期
         require(
             block.timestamp > deadline,
-            "CrowdfundingCampaign:campaign not ended"
+            "CrowdfundingCampaign: campaign not ended"
         );
 
         // 保存旧状态用于事件
@@ -178,7 +178,7 @@ contract CrowdfundingCampaign {
 
         // 将资金转移到创建者地址
         (bool success, ) = owner.call{value: amount}("");
-        require(success, "CrowdfundingCampaign:withdraw failed");
+        require(success, "CrowdfundingCampaign: withdrawal failed");
 
         // 触发提取事件
         emit Withdrawal(owner, amount);
@@ -196,13 +196,13 @@ contract CrowdfundingCampaign {
         // 获取调用者的贡献资金
         uint256 amount = contributions[msg.sender];
         // 验证贡献资金必须大于0
-        require(amount > 0, "CrowdfundingCampaign:no contribution to refund");
+        require(amount > 0, "CrowdfundingCampaign: no contribution to refund");
 
         // 防止重入攻击:先清零贡献记录
         contributions[msg.sender] = 0;
         // 将资金退还给贡献者
         (bool success, ) = msg.sender.call{value: amount}("");
-        require(success, "CrowdfundingCampaign:refund failed");
+        require(success, "CrowdfundingCampaign: refund failed");
 
         // 触发退款事件
         emit Refund(msg.sender, amount);
