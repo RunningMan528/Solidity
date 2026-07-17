@@ -55,8 +55,43 @@ export function Web3Provider({ children }: { children: ReactNode }) {
     };
 
     useEffect(() => {
-        if (typeof window !== 'undefined' && window.ethereum) {
-            const initProvider = new ethers.BrowserProvider(window.ethereum);
+        const initializeWallet = () => {
+            const ethereum = window.ethereum;
+            if (!ethereum) {
+                return;
+            }
+
+            const handleAccountsChanged = async (accounts: string[]) => {
+                if (accounts.length === 0) {
+                    setAccount(null);
+                    setSigner(null);
+                    return;
+                }
+
+                try {
+                    const currentProvider = new ethers.BrowserProvider(ethereum);
+                    const newSigner = await currentProvider.getSigner();
+                    setProvider(currentProvider);
+                    setSigner(newSigner);
+                    setAccount(accounts[0]);
+                    console.log('Account changed, signer updated:', accounts[0]);
+                } catch (error) {
+                    console.error('Failed to get signer after account change:', error);
+                }
+            };
+
+            const handleChainChanged = async () => {
+                console.log('Chain changed, updating provider...');
+                const newProvider = new ethers.BrowserProvider(ethereum);
+                const network = await newProvider.getNetwork();
+                console.log('New network:', { chainId: Number(network.chainId), name: network.name });
+                setProvider(newProvider);
+
+                const accounts = await ethereum.request({ method: 'eth_accounts' }) as string[];
+                await handleAccountsChanged(accounts);
+            };
+
+            const initProvider = new ethers.BrowserProvider(ethereum);
 
             // Check network and switch if needed
             initProvider.getNetwork().then(async (network) => {
@@ -75,7 +110,7 @@ export function Web3Provider({ children }: { children: ReactNode }) {
                         const newProvider = new ethers.BrowserProvider(window.ethereum);
                         setProvider(newProvider);
                         // Re-check accounts after network switch
-                        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                        const accounts = await ethereum.request({ method: 'eth_accounts' }) as string[];
                         if (accounts.length > 0) {
                             const newSigner = await newProvider.getSigner();
                             setSigner(newSigner);
@@ -93,8 +128,8 @@ export function Web3Provider({ children }: { children: ReactNode }) {
                 setProvider(initProvider);
 
                 // Check if already connected
-                if (window.ethereum) {
-                    window.ethereum
+                if (ethereum) {
+                    ethereum
                         .request({ method: 'eth_accounts' })
                         .then((accounts: string[]) => {
                             if (accounts.length > 0) {
@@ -105,63 +140,31 @@ export function Web3Provider({ children }: { children: ReactNode }) {
             });
 
             // Listen for account changes
-            if (window.ethereum && window.ethereum.on) {
-                window.ethereum.on('accountsChanged', handleAccountsChanged);
-                window.ethereum.on('chainChanged', async () => {
-                    // Update provider when chain changes, without reloading page
-                    console.log('🔄 Chain changed, updating provider...');
-                    if (!window.ethereum) {
-                        console.error('❌ window.ethereum is not available');
-                        return;
-                    }
-                    const newProvider = new ethers.BrowserProvider(window.ethereum);
-                    const network = await newProvider.getNetwork();
-                    console.log('✅ New network:', { chainId: Number(network.chainId), name: network.name });
-                    setProvider(newProvider);
-                    // Re-check accounts after chain change
-                    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-                    if (accounts.length > 0) {
-                        const newSigner = await newProvider.getSigner();
-                        setSigner(newSigner);
-                        setAccount(accounts[0]);
-                    } else {
-                        setAccount(null);
-                        setSigner(null);
-                    }
-                });
+            if (ethereum.on) {
+                ethereum.on('accountsChanged', handleAccountsChanged);
+                ethereum.on('chainChanged', handleChainChanged);
             }
-        }
+
+            return () => {
+                if (ethereum.removeListener) {
+                    ethereum.removeListener('accountsChanged', handleAccountsChanged);
+                    ethereum.removeListener('chainChanged', handleChainChanged);
+                }
+            };
+        };
+
+        let cleanup = initializeWallet();
+        const handleEthereumInitialized = () => {
+            cleanup?.();
+            cleanup = initializeWallet();
+        };
+        window.addEventListener('ethereum#initialized', handleEthereumInitialized, { once: true });
 
         return () => {
-            if (window.ethereum && window.ethereum.removeListener) {
-                window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-            }
+            cleanup?.();
+            window.removeEventListener('ethereum#initialized', handleEthereumInitialized);
         };
     }, []);
-
-    const handleAccountsChanged = async (accounts: string[]) => {
-        if (accounts.length === 0) {
-            setAccount(null);
-            setSigner(null);
-        } else {
-            const newAccount = accounts[0];
-            setAccount(newAccount);
-
-            // 确保 provider 存在后再获取 signer
-            if (window.ethereum) {
-                try {
-                    const currentProvider = new ethers.BrowserProvider(window.ethereum);
-                    const newSigner = await currentProvider.getSigner();
-                    setSigner(newSigner);
-                    // 如果 provider 状态还没有设置，也设置它
-                    setProvider(currentProvider);
-                    console.log('✅ Account changed, signer updated:', newAccount);
-                } catch (error) {
-                    console.error('Failed to get signer after account change:', error);
-                }
-            }
-        }
-    };
 
 
     const connectWallet = async () => {
@@ -176,7 +179,7 @@ export function Web3Provider({ children }: { children: ReactNode }) {
 
             // Check and switch to Sepolia network
             const network = await newProvider.getNetwork();
-            const expectedChainId = BigInt(11155111); // Sepolia
+            const expectedChainId = chainConfig.chainId; // Sepolia
 
             if (network.chainId !== expectedChainId) {
                 console.log(`Current network: ${network.chainId}, expected: ${expectedChainId}`);
