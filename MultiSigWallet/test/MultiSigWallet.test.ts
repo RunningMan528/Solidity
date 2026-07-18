@@ -5,7 +5,7 @@ import "@nomicfoundation/hardhat-toolbox-mocha-ethers";
 // 在 Hardhat 3.0 中，使用 @nomicfoundation/hardhat-toolbox-mocha-ethers 时
 // loadFixture 应该从 network 对象获取
 async function getLoadFixture() {
-  const connection = await network.connect();
+  const connection = await network.create();
   // @ts-ignore - loadFixture 由插件提供
   if (!connection.loadFixture) {
     // 如果 loadFixture 不可用，尝试从 networkHelpers 获取
@@ -23,7 +23,7 @@ async function getLoadFixture() {
 describe("MultiSigWallet", function () {
   //定义 Fixture 函数
   async function deployMultiSigFixture() {
-    const connection = await network.connect();
+    const connection = await network.create();
     // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
     const { ethers } = connection;
     const signers = await ethers.getSigners();
@@ -55,7 +55,7 @@ describe("MultiSigWallet", function () {
 
     //测试用例：拒绝无效参数
     it("Should revert with zero address", async function () {
-      const connection = await network.connect();
+      const connection = await network.create();
       // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
       const { ethers } = connection;
       const signers = await ethers.getSigners();
@@ -69,7 +69,7 @@ describe("MultiSigWallet", function () {
 
     //测试用例：拒绝无效阈值
     it("Should revert with invalid threshold", async function () {
-      const connection = await network.connect();
+      const connection = await network.create();
       // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
       const { ethers } = connection;
       const signers = await ethers.getSigners();
@@ -138,7 +138,7 @@ describe("MultiSigWallet", function () {
     it("Should submit transaction", async function () {
       const loadFixture = await getLoadFixture();
       const { wallet, recipient } = await loadFixture(deployMultiSigFixture);
-      const connection = await network.connect();
+      const connection = await network.create();
       // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
       const { ethers } = connection;
 
@@ -156,7 +156,7 @@ describe("MultiSigWallet", function () {
     it("Should get transaction count", async function () {
       const loadFixture = await getLoadFixture();
       const { wallet, recipient } = await loadFixture(deployMultiSigFixture);
-      const connection = await network.connect();
+      const connection = await network.create();
       // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
       const { ethers } = connection;
 
@@ -173,7 +173,7 @@ describe("MultiSigWallet", function () {
     it("Should confirm transaction", async function () {
       const loadFixture = await getLoadFixture();
       const { wallet, owner1, owner2, recipient } = await loadFixture(deployMultiSigFixture);
-      const connection = await network.connect();
+      const connection = await network.create();
       // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
       const { ethers } = connection;
 
@@ -190,7 +190,7 @@ describe("MultiSigWallet", function () {
     it("Should revoke confirmation", async function () {
       const loadFixture = await getLoadFixture();
       const { wallet, owner1, recipient } = await loadFixture(deployMultiSigFixture);
-      const connection = await network.connect();
+      const connection = await network.create();
       // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
       const { ethers } = connection;
 
@@ -207,7 +207,7 @@ describe("MultiSigWallet", function () {
     it("Should revert when confirming twice", async function () {
       const loadFixture = await getLoadFixture();
       const { wallet, owner1, recipient } = await loadFixture(deployMultiSigFixture);
-      const connection = await network.connect();
+      const connection = await network.create();
       // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
       const { ethers } = connection;
 
@@ -226,7 +226,7 @@ describe("MultiSigWallet", function () {
     it("Should execute ETH transfer", async function () {
       const loadFixture = await getLoadFixture();
       const { wallet, owner1, owner2, recipient } = await loadFixture(deployMultiSigFixture);
-      const connection = await network.connect();
+      const connection = await network.create();
       // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
       const { ethers } = connection;
 
@@ -282,7 +282,7 @@ describe("MultiSigWallet", function () {
     it("Should revert when executing twice", async function () {
       const loadFixture = await getLoadFixture();
       const { wallet, owner1, owner2, recipient } = await loadFixture(deployMultiSigFixture);
-      const connection = await network.connect();
+      const connection = await network.create();
       // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
       const { ethers } = connection;
 
@@ -304,7 +304,7 @@ describe("MultiSigWallet", function () {
     it("Should revert when not enough confirmations", async function () {
       const loadFixture = await getLoadFixture();
       const { wallet, owner1, recipient } = await loadFixture(deployMultiSigFixture);
-      const connection = await network.connect();
+      const connection = await network.create();
       // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
       const { ethers } = connection;
 
@@ -323,7 +323,7 @@ describe("MultiSigWallet", function () {
     it("Should receive ETH and emit event", async function () {
       const loadFixture = await getLoadFixture();
       const { wallet, owner1 } = await loadFixture(deployMultiSigFixture);
-      const connection = await network.connect();
+      const connection = await network.create();
       // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
       const { ethers } = connection;
 
