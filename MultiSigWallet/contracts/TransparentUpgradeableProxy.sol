@@ -10,7 +10,7 @@ contract TransparentUpgradeableProxy is
 {
     constructor(
         address _logic,
-        address _admin,
+        address initialOwner,
         bytes memory _data
-    ) OpenZeppelinTransparentUpgradeableProxy(_logic, _admin, _data) {}
+    ) OpenZeppelinTransparentUpgradeableProxy(_logic, initialOwner, _data) {}
 }

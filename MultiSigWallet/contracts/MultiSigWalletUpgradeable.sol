@@ -407,7 +407,7 @@ contract MultiSigWalletUpgradeable is Initializable, ContextUpgradeable {
         return owners;
     }
 
-    function getThresold() public view returns (uint256) {
+    function getThreshold() public view returns (uint256) {
         return numConfirmationsRequired;
     }
 
