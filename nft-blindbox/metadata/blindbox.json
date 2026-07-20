@@ -1,0 +1,11 @@
+{
+  "name": "Totoro887 NFT",
+  "description": "An unrevealed Totoro887 NFT blind box.",
+  "image": "ipfs://bafkreialghiqpdhaj6sdtnfebacoepf5pzqgu43xjz4kimrucp3gehvsii",
+  "attributes": [
+    {
+      "trait_type": "Status",
+      "value": "Unrevealed"
+    }
+  ]
+}

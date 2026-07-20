@@ -1,0 +1,11 @@
+{
+  "name": "Totoro887 NFT - Common",
+  "description": "A revealed Totoro887 NFT with Common rarity.",
+  "image": "ipfs://bafkreia5q5cqws3o2awrmot2kzcvsz42viqsidrhhmulcejgklhmlhsxd4",
+  "attributes": [
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

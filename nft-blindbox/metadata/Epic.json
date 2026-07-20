@@ -1,0 +1,11 @@
+{
+  "name": "Totoro887 NFT - Epic",
+  "description": "A revealed Totoro887 NFT with Epic rarity.",
+  "image": "ipfs://bafybeiefmqcilva5q4pfo7mrp3w54apjylze7yw4odv5fm6ig5xgsm4n5q",
+  "attributes": [
+    {
+      "trait_type": "Rarity",
+      "value": "Epic"
+    }
+  ]
+}

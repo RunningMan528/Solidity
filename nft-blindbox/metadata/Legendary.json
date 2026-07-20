@@ -1,0 +1,11 @@
+{
+  "name": "Totoro887 NFT - Legendary",
+  "description": "A revealed Totoro887 NFT with Legendary rarity.",
+  "image": "ipfs://bafkreiev4cprsevwyqoorvdobot6betvq7x5imm3zj7ebhr2y4mxwjm5ta",
+  "attributes": [
+    {
+      "trait_type": "Rarity",
+      "value": "Legendary"
+    }
+  ]
+}
