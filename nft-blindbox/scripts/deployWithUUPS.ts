@@ -1,7 +1,6 @@
+import "dotenv/config";
 import { network } from "hardhat";
 import { createRequire } from "module";
-// 导入类型扩展以支持 hre.upgrades
-import "@openzeppelin/hardhat-upgrades";
 
 const require = createRequire(import.meta.url);
 
@@ -49,7 +48,7 @@ async function deployUUPSProxy(
  * npx hardhat run scripts/deployWithUUPS.ts --network localhost
  */
 async function main() {
-  const connection = await network.connect();
+  const connection = await network.create();
   // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
   const { ethers } = connection;
   const [deployer] = await ethers.getSigners();
@@ -80,8 +79,8 @@ async function main() {
   console.log("Name:", name);
   console.log("Symbol:", symbol);
   console.log("Max Supply:", maxSupply.toString());
-  console.log("SaleManager:", saleManagerAddress);
-  console.log("VRFHandler:", vrfHandlerAddress);
+  console.log("SaleManager proxy:", saleManagerAddress);
+  console.log("VRFHandler proxy:", vrfHandlerAddress);
   console.log("Base URI:", baseURI);
 
   // 获取合约工厂
@@ -131,8 +130,8 @@ async function main() {
   // 验证模块连接
   const saleManager = await blindBox.saleManager();
   const vrfHandler = await blindBox.vrfHandler();
-  console.log("Connected SaleManager:", saleManager);
-  console.log("Connected VRFHandler:", vrfHandler);
+  console.log("Connected SaleManager proxy:", saleManager);
+  console.log("Connected VRFHandler proxy:", vrfHandler);
 
   return {
     proxy: proxyAddress,
@@ -145,9 +144,9 @@ main()
     console.log("\nDeployment successful!");
     console.log("Proxy:", result.proxy);
     console.log("\n💡 Next steps:");
-    console.log("1. Configure SaleManager (price, whitelist, etc.)");
-    console.log("2. Configure VRF settings in VRFHandler");
-    console.log("3. Add VRFHandler address to Chainlink subscription");
+    console.log("1. Configure SaleManager through its proxy (price, whitelist, etc.)");
+    console.log("2. Configure VRFHandler through its proxy");
+    console.log("3. Add the VRFHandler proxy address to the Chainlink subscription");
     process.exit(0);
   })
   .catch((error) => {

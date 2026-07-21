@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { network } from "hardhat";
 // 导入类型扩展以支持 hre.upgrades
 import "@openzeppelin/hardhat-upgrades";
@@ -9,7 +10,7 @@ import "@openzeppelin/hardhat-upgrades";
  * PROXY_ADDRESS=0x... npx hardhat run scripts/upgrade.ts --network <network>
  */
 async function main() {
-  const connection = await network.connect();
+  const connection = await network.create();
   // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
   const { ethers } = connection;
 

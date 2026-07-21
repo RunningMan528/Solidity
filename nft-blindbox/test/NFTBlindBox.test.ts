@@ -115,7 +115,7 @@ describe("NFTBlindBox", function () {
     const SaleManager = await ethers.getContractFactory("SaleManager");
     const saleManagerProxy = await deployUUPSProxy(
       SaleManager,
-      [price, 10n], // price, maxPerWallet
+      [owner.address, price, 10n], // initialOwner, price, maxPerWallet
       owner
     );
     const saleManagerAddress = await saleManagerProxy.getAddress();
@@ -125,6 +125,7 @@ describe("NFTBlindBox", function () {
     const vrfHandlerProxy = await deployUUPSProxy(
       VRFHandler,
       [
+        owner.address,
         vrfCoordinator,
         keyHash,
         subscriptionId,
@@ -375,6 +376,98 @@ describe("NFTBlindBox", function () {
       // 验证V2功能
       const version = await blindBoxV2.version();
       expect(version).to.equal(2n);
+    });
+
+    it("Should upgrade module implementations while preserving proxy state", async function () {
+      const { owner, buyer1, saleManager, saleManagerAddress, vrfHandlerAddress } =
+        await networkHelpers.loadFixture(deployNFTBlindBoxFixture);
+
+      const SaleManager = await ethersInstance.getContractFactory("SaleManager");
+      const newSaleManagerImplementation = await SaleManager.connect(owner).deploy();
+      await newSaleManagerImplementation.waitForDeployment();
+
+      await expect(
+        saleManager
+          .connect(buyer1)
+          .upgradeToAndCall(await newSaleManagerImplementation.getAddress(), "0x")
+      ).to.be.revertedWithCustomError(
+        saleManager,
+        "OwnableUnauthorizedAccount"
+      );
+
+      const upgradedSaleManager = await upgradeUUPSProxy(
+        saleManagerAddress,
+        SaleManager,
+        owner
+      );
+      expect(await upgradedSaleManager.getAddress()).to.equal(saleManagerAddress);
+      expect(await upgradedSaleManager.owner()).to.equal(owner.address);
+      expect(await upgradedSaleManager.price()).to.equal(
+        ethersInstance.parseEther("0.08")
+      );
+
+      const VRFHandler = await ethersInstance.getContractFactory("VRFHandler");
+      const upgradedVrfHandler = await upgradeUUPSProxy(
+        vrfHandlerAddress,
+        VRFHandler,
+        owner
+      );
+      expect(await upgradedVrfHandler.getAddress()).to.equal(vrfHandlerAddress);
+      expect(await upgradedVrfHandler.owner()).to.equal(owner.address);
+      expect(await upgradedVrfHandler.getSubscriptionId()).to.equal(1n);
+    });
+
+    it("Should fulfill a tokenId zero request through the Chainlink raw callback after upgrading to V3", async function () {
+      const [owner] = await ethersInstance.getSigners();
+      const MockVRFCoordinator = await ethersInstance.getContractFactory(
+        "MockVRFCoordinator"
+      );
+      const coordinator = await MockVRFCoordinator.connect(owner).deploy();
+      await coordinator.waitForDeployment();
+      const MockVRFCallback = await ethersInstance.getContractFactory(
+        "MockVRFCallback"
+      );
+      const callback = await MockVRFCallback.connect(owner).deploy();
+      await callback.waitForDeployment();
+
+      const VRFHandler = await ethersInstance.getContractFactory("VRFHandler");
+      const vrfHandler = await deployUUPSProxy(
+        VRFHandler,
+        [
+          owner.address,
+          await coordinator.getAddress(),
+          "0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc",
+          1n,
+          100000,
+          3,
+          true,
+        ],
+        owner
+      );
+      const vrfHandlerAddress = await vrfHandler.getAddress();
+
+      await vrfHandler.requestRandomness(0n, await callback.getAddress());
+      await expect(
+        coordinator.fulfill(vrfHandlerAddress, 1n, 123n)
+      ).to.revert(ethersInstance);
+
+      const VRFHandlerV3 = await ethersInstance.getContractFactory("VRFHandlerV3");
+      const upgradedVrfHandler = await upgradeUUPSProxy(
+        vrfHandlerAddress,
+        VRFHandlerV3,
+        owner
+      );
+
+      await expect(
+        coordinator.fulfill(vrfHandlerAddress, 1n, 123n)
+      )
+        .to.emit(upgradedVrfHandler, "RandomnessFulfilled")
+        .withArgs(1n, 0n);
+      expect(await upgradedVrfHandler.getCallbackContractByRequestId(1n)).to.equal(
+        ethersInstance.ZeroAddress
+      );
+      expect(await callback.lastTokenId()).to.equal(0n);
+      expect(await callback.lastRandomness()).to.equal(123n);
     });
   });
 });

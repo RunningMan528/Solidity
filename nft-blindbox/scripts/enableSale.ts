@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { network } from "hardhat";
 
 /**
@@ -20,7 +21,7 @@ import { network } from "hardhat";
  * - stop       - 停止销售
  */
 async function main() {
-  const connection = await network.connect();
+  const connection = await network.create();
   // @ts-ignore - ethers 属性由 @nomicfoundation/hardhat-ethers 插件添加
   const { ethers } = connection;
   const [deployer] = await ethers.getSigners();

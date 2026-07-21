@@ -2,6 +2,7 @@
 pragma solidity ^0.8.28;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFCoordinatorV2Plus.sol";
 import "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
 import "../interfaces/IVRFHandler.sol";
@@ -9,22 +10,27 @@ import "../interfaces/IVRFHandler.sol";
 /**
  * @title VRFHandler
  * @dev VRF处理器合约,负责处理Chainlink VRF集成
- * @notice 这是一个可升级的独立模块,可以被其他合约使用
+ * @notice 这是一个通过 UUPS 代理部署和升级的独立模块
  */
-contract VRFHandler is Initializable, OwnableUpgradeable, IVRFHandler {
+contract VRFHandler is
+    Initializable,
+    OwnableUpgradeable,
+    UUPSUpgradeable,
+    IVRFHandler
+{
     // 状态变量
-    IVRFCoordinatorV2Plus private vrfCoordinator;
-    bytes32 private keyHash;
-    uint256 private subscriptionId; // VRF v2.5 使用uint256
-    uint32 private callbackGasLimit;
-    uint16 private requestConfirmations;
-    uint32 private numWords;
-    bool private nativePayment; // VRF v2.5 支持原生代币支付
+    IVRFCoordinatorV2Plus internal vrfCoordinator;
+    bytes32 internal keyHash;
+    uint256 internal subscriptionId; // VRF v2.5 使用uint256
+    uint32 internal callbackGasLimit;
+    uint16 internal requestConfirmations;
+    uint32 internal numWords;
+    bool internal nativePayment; // VRF v2.5 支持原生代币支付
 
     // 请求ID到tokenId的映射
-    mapping(uint256 => uint256) private requestIdToTokenId;
+    mapping(uint256 => uint256) internal requestIdToTokenId;
     // 请求ID到回调合约的映射
-    mapping(uint256 => address) private requestIdToCallback;
+    mapping(uint256 => address) internal requestIdToCallback;
 
     // 事件
 
@@ -54,6 +60,7 @@ contract VRFHandler is Initializable, OwnableUpgradeable, IVRFHandler {
     }
 
     function initialize(
+        address initialOwner,
         address _vrfCoordinator,
         bytes32 _keyHash,
         uint256 _subscriptionId, // VRF v2.5 使用 uint256
@@ -61,7 +68,7 @@ contract VRFHandler is Initializable, OwnableUpgradeable, IVRFHandler {
         uint16 _requestConfirmations,
         bool _nativePayment // VRF v2.5 支持原生代币支付
     ) public initializer {
-        __Ownable_init(msg.sender);
+        __Ownable_init(initialOwner);
         vrfCoordinator = IVRFCoordinatorV2Plus(_vrfCoordinator);
         keyHash = _keyHash;
         subscriptionId = _subscriptionId;
@@ -70,6 +77,13 @@ contract VRFHandler is Initializable, OwnableUpgradeable, IVRFHandler {
         numWords = 1;
         nativePayment = _nativePayment;
     }
+
+    /**
+     * @dev 授权 UUPS 升级，仅模块 owner 可以执行。
+     */
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyOwner {}
 
     // VRF操作
 
@@ -82,7 +96,7 @@ contract VRFHandler is Initializable, OwnableUpgradeable, IVRFHandler {
     function requestRandomness(
         uint256 tokenId,
         address callbackContract
-    ) external override returns (uint256 requestId) {
+    ) external virtual override returns (uint256 requestId) {
         // 构建 VRF v2.5 请求结构体
         VRFV2PlusClient.RandomWordsRequest memory req = VRFV2PlusClient
             .RandomWordsRequest({
@@ -110,7 +124,7 @@ contract VRFHandler is Initializable, OwnableUpgradeable, IVRFHandler {
     function fulfillRandomWords(
         uint256 requestId,
         uint256[] memory randomWords
-    ) external override onlyCoordinator {
+    ) external virtual override onlyCoordinator {
         uint256 tokenId = requestIdToTokenId[requestId];
         address callbackContract = requestIdToCallback[requestId];
 

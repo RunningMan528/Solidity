@@ -1,8 +1,9 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Gift, Sparkles, Lock } from 'lucide-react';
-import { RARITY_CONFIG } from '@/lib/config';
+import { APP_CONFIG, RARITY_CONFIG } from '@/lib/config';
 import { getRarityName, getRarityGradient } from '@/lib/format';
 import { Rarity } from '@/lib/contracts';
 
@@ -15,6 +16,26 @@ interface BlindBoxCardProps {
   className?: string;
 }
 
+interface NFTMetadata {
+  image?: string;
+}
+
+function resolveIpfsUri(uri: string): string {
+  if (!uri.startsWith('ipfs://')) {
+    return uri;
+  }
+
+  return `${APP_CONFIG.ipfsGateway.replace(/\/$/, '')}/${uri.slice('ipfs://'.length)}`;
+}
+
+function resolveMetadataUri(uri: string): string {
+  if (!uri.startsWith('ipfs://')) {
+    return uri;
+  }
+
+  return `/api/ipfs?path=${encodeURIComponent(uri.slice('ipfs://'.length))}`;
+}
+
 export default function BlindBoxCard({
   tokenId,
   revealed,
@@ -23,12 +44,51 @@ export default function BlindBoxCard({
   onClick,
   className = '',
 }: BlindBoxCardProps) {
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const rarityName = getRarityName(rarity);
   const rarityGradient = getRarityGradient(rarity);
   const rarityConfig = rarity === Rarity.Common ? RARITY_CONFIG.common :
                        rarity === Rarity.Rare ? RARITY_CONFIG.rare :
                        rarity === Rarity.Epic ? RARITY_CONFIG.epic :
                        RARITY_CONFIG.legendary;
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadMetadata() {
+      if (!revealed || !tokenURI) {
+        setImageUrl(null);
+        return;
+      }
+
+      try {
+        const response = await fetch(resolveMetadataUri(tokenURI));
+        if (!response.ok) {
+          throw new Error(`Metadata request failed with ${response.status}`);
+        }
+
+        const metadata = (await response.json()) as NFTMetadata;
+        if (!metadata.image) {
+          throw new Error('Metadata does not contain an image URI');
+        }
+
+        if (!cancelled) {
+          setImageUrl(resolveIpfsUri(metadata.image));
+        }
+      } catch (error) {
+        console.error(`Failed to load metadata for NFT #${tokenId}:`, error);
+        if (!cancelled) {
+          setImageUrl(null);
+        }
+      }
+    }
+
+    void loadMetadata();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [tokenId, tokenURI, revealed]);
 
   return (
     <motion.div
@@ -55,13 +115,13 @@ export default function BlindBoxCard({
             <>
               {/* 已揭示 - 显示NFT图片和稀有度 */}
               <div className="aspect-square rounded-xl bg-white/10 backdrop-blur-sm mb-4 flex items-center justify-center overflow-hidden">
-                {tokenURI ? (
+                {imageUrl ? (
                   <img 
-                    src={tokenURI} 
+                    src={imageUrl} 
                     alt={`NFT #${tokenId}`}
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = `https://via.placeholder.com/400?text=NFT+${tokenId}`;
+                      e.currentTarget.style.display = 'none';
                     }}
                   />
                 ) : (
@@ -88,38 +148,10 @@ export default function BlindBoxCard({
             </>
           ) : (
             <>
-              {/* 未揭示 - 显示动感盲盒样式 */}
+              {/* 未揭示 - 显示动态盲盒样式 */}
               <div className="aspect-square rounded-xl bg-gradient-to-br from-primary-400/20 to-primary-600/20 backdrop-blur-sm mb-4 flex items-center justify-center relative overflow-hidden">
-                {/* 动态背景光效 */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.4),transparent_70%)] animate-pulse" />
                 <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,rgba(168,85,247,0.1),rgba(139,92,246,0.1),rgba(168,85,247,0.1))] animate-spin-slow" />
-                
-                {/* 粒子效果 */}
-                <div className="absolute inset-0">
-                  {[...Array(6)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute w-2 h-2 bg-primary-400 rounded-full"
-                      style={{
-                        left: `${20 + i * 15}%`,
-                        top: `${30 + (i % 3) * 20}%`,
-                      }}
-                      animate={{
-                        y: [0, -20, 0],
-                        opacity: [0.3, 1, 0.3],
-                        scale: [1, 1.5, 1],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        delay: i * 0.3,
-                        ease: "easeInOut",
-                      }}
-                    />
-                  ))}
-                </div>
-
-                {/* 旋转的盲盒图标 */}
                 <motion.div
                   animate={{
                     rotate: [0, 5, -5, 0],
@@ -132,22 +164,7 @@ export default function BlindBoxCard({
                   }}
                   className="relative z-10"
                 >
-                  <div className="relative">
-                    <Gift className="w-24 h-24 text-primary-600 dark:text-primary-400 drop-shadow-2xl" />
-                    {/* 光晕效果 */}
-                    <motion.div
-                      className="absolute inset-0 bg-primary-400/30 rounded-full blur-xl"
-                      animate={{
-                        scale: [1, 1.3, 1],
-                        opacity: [0.5, 0.8, 0.5],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                  </div>
+                  <Gift className="w-24 h-24 text-primary-600 dark:text-primary-400 drop-shadow-2xl" />
                 </motion.div>
 
                 {/* 锁图标 */}

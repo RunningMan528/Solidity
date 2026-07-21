@@ -2,13 +2,14 @@
 pragma solidity ^0.8.28;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 /**
  * @title SaleManager
  * @dev 销售管理模块,处理销售状态,价格,白名单
- * @notice 这是一个可升级的独立模块,可以被主合约使用
+ * @notice 这是一个通过 UUPS 代理部署和升级的独立模块
  */
-contract SaleManager is Initializable, OwnableUpgradeable {
+contract SaleManager is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     // 枚举
     enum SalePhase {
         NotStarted, // 未开始
@@ -45,15 +46,23 @@ contract SaleManager is Initializable, OwnableUpgradeable {
      * @dev 初始化销售管理器
      */
     function initialize(
+        address initialOwner,
         uint256 _price,
         uint256 _maxPerWallet
     ) public initializer {
-        __Ownable_init(msg.sender);
+        __Ownable_init(initialOwner);
         price = _price;
         maxPerWallet = _maxPerWallet;
         currentPhase = SalePhase.NotStarted;
         saleActive = false;
     }
+
+    /**
+     * @dev 授权 UUPS 升级，仅模块 owner 可以执行。
+     */
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyOwner {}
 
     // 销售状态管理
     /**

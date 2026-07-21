@@ -40,6 +40,20 @@ export default function MyNFTs() {
     };
   }, [refresh]);
 
+  useEffect(() => {
+    if (!userNFTs.some((nft) => !nft.status.revealed)) {
+      return;
+    }
+
+    const refreshInterval = setInterval(() => {
+      refresh();
+    }, 15_000);
+
+    return () => {
+      clearInterval(refreshInterval);
+    };
+  }, [userNFTs, refresh]);
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-20">
